@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Sergey Lyapin](https://up.htmlacademy.ru/javascript/14/user/522427).
-* Наставник: `Неизвестно`.
+* Наставник: [Роман Мисюрин](https://htmlacademy.ru/profile/lunaticus).
 
 ---
 
