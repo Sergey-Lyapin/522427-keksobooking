@@ -29,7 +29,7 @@ insertPin();
 insertAd();
 
 
-function generateAds() {
+var generateAds = function() {
   var ads = [];
   
   for (var i = 0; i < NUMBER_OF_USERS; i++) {
@@ -67,7 +67,7 @@ function generateAds() {
 }
   
   
-function createPin(pinsArrayElement) {
+ var createPin = function(pinsArrayElement) {
   var pinElement = pinTemplate.cloneNode(true);
   
   pinElement.style.left = (pinsArrayElement.location.x - (PIN_WIDTH / 2)) + 'px';
@@ -78,7 +78,7 @@ function createPin(pinsArrayElement) {
   return pinElement;
 }
 
-function insertPin() {
+var insertPin = function() {
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < ads.length; i++) {
@@ -87,7 +87,7 @@ function insertPin() {
   mapPins.appendChild(fragment); 
 }
   
-function createAd(adArrayElement) {
+var createAd = function(adArrayElement) {
   var adElement = adTemplate.cloneNode(true);
   var adAvatar = adTemplate.querySelector('.popup__avatar'); 
   
@@ -110,7 +110,7 @@ function createAd(adArrayElement) {
 
 }
   
-function insertAd() {
+var insertAd = function() {
   var mapTokio = document.querySelector('.map');
   var referenceElement = document.querySelector('.map__filters-container');
   
@@ -119,11 +119,11 @@ function insertAd() {
 }
   
   
-function getRandomNumber(min, max) {
+var getRandomNumber = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
   
-function generateAvatars() {
+var generateAvatars = function() {
   var listAvatars = [];
 
   for (var i = 1; i < NUMBER_OF_USERS + 1; i++) {
@@ -137,7 +137,7 @@ function generateAvatars() {
   return listAvatars;
 }
   
-function getRandomElement(array) {
+var getRandomElement = function(array) {
   for (var i = 0; i < array.length; i++) {
     var randomIndex = Math.floor(Math.random() * array.length);
   }
@@ -145,17 +145,17 @@ function getRandomElement(array) {
   return randomElement;
 }
   
-function compareRandom() {
+var compareRandom = function() {
   return Math.random() - 0.5;
 }
   
-function getRandomArray(array) {
+var getRandomArray = function(array) {
   var clone = array.sort(compareRandom).slice();
   clone.length = getRandomNumber(1, array.length);
   return clone;
 }
   
-function translateType(type) {
+var translateType = function(type) {
   switch (type) {
     case 'flat':
       return 'Квартира';
@@ -168,12 +168,12 @@ function translateType(type) {
   }
 }
   
-function removeChilds(element) {
+var removeChilds = function(element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
 }
   
-function generateIconsFeatures(arrayFeatures) {
+var generateIconsFeatures = function(arrayFeatures) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < arrayFeatures.length; i++) {
     var feature = createIconFeature(arrayFeatures[i]);
@@ -182,7 +182,7 @@ function generateIconsFeatures(arrayFeatures) {
   return fragment;
 }
 
-function generatePopupPhotos (arrayPhotos) {
+var generatePopupPhotos = function(arrayPhotos) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < arrayPhotos.length; i++) {
     var photo = createPopupPhoto(arrayPhotos[i]);
@@ -190,7 +190,7 @@ function generatePopupPhotos (arrayPhotos) {
   }
 }
   
-function createPopupPhoto (photo) {
+var createPopupPhoto = function(photo) {
   var popupPhoto = document.createElement(img);
   popupPhoto.classList.add('popup__photo');
   popupPhoto.setAttribute(width, 45);
