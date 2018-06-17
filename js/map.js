@@ -24,19 +24,19 @@ var ads = generateAds();
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 var adTemplate = document.querySelector('template').content.querySelector('.map__card');
 
-tokioMap.classList.remove('map--faded')
+tokioMap.classList.remove('map--faded');
 insertPin();
 insertAd();
 
 
 function generateAds() {
-  var ads = [];
+  var adsArray = [];
 
   for (var i = 0; i < NUMBER_OF_USERS; i++) {
     var locationX = getRandomNumber(MIN_X, MAX_X);
     var locationY = getRandomNumber(MIN_Y, MAX_Y);
 
-    ads.push({
+    adsArray.push({
       'author': {
         'avatar': generateAvatars()[i]
       },
@@ -64,7 +64,7 @@ function generateAds() {
 
   }
 
-  return ads;
+  return adsArray;
 }
 
 
