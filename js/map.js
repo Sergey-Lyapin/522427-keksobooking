@@ -29,18 +29,18 @@ insertPin();
 insertAd();
 
 
-var generateAds = function() {
+function generateAds() {
   var ads = [];
-  
+
   for (var i = 0; i < NUMBER_OF_USERS; i++) {
     var locationX = getRandomNumber(MIN_X, MAX_X);
     var locationY = getRandomNumber(MIN_Y, MAX_Y);
-  
-    ads[i] = {
-      'author': { 
+
+    ads.push({
+      'author': {
         'avatar': generateAvatars()[i]
       },
-      
+
       'offer': {
         'title': AD_TITLES[i],
         'address': locationX + ', ' + locationY,
@@ -54,49 +54,52 @@ var generateAds = function() {
         'description': '',
         'photos': ROOM_PHOTOS.sort(compareRandom)
       },
-      
+
       'location': {
         'x': locationX,
         'y': locationY
       }
-         
-    };
-    
-    return ads;
-  
+
+    });
+
+  }
+
+  return ads;
 }
-  
-  
- var createPin = function(pinsArrayElement) {
+
+
+function createPin(pinsArrayElement) {
   var pinElement = pinTemplate.cloneNode(true);
-  
+
   pinElement.style.left = (pinsArrayElement.location.x - (PIN_WIDTH / 2)) + 'px';
   pinElement.style.top = (pinsArrayElement.location.y - PIN_HEIGHT) + 'px';
   pinElement.querySelector('img').src = pinsArrayElement.author.avatar;
   pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
-  
+
   return pinElement;
 }
 
-var insertPin = function() {
+function insertPin() {
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
+
   for (var i = 0; i < ads.length; i++) {
     fragment.appendChild(createPin(ads[i]));
   }
-  mapPins.appendChild(fragment); 
+
+  mapPins.appendChild(fragment);
 }
-  
-var createAd = function(adArrayElement) {
+
+function createAd(adArrayElement) {
   var adElement = adTemplate.cloneNode(true);
-  var adAvatar = adTemplate.querySelector('.popup__avatar'); 
-  
+  var adAvatar = adTemplate.querySelector('.popup__avatar');
+
   adAvatar.src = adArrayElement.author.avatar;
   adAvatar.alt = adArrayElement.offer.title;
-  
+
   adElement.querySelector('.popup__title').textContent = adArrayElement.offer.title;
   adElement.querySelector('.popup__text--address').textContent = adArrayElement.offer.address;
-  adElement.querySelector('.popup__text--price').textContent = adArrayElement.offer.price + '&#x20bd;';
+  adElement.querySelector('.popup__text--price').textContent = adArrayElement.offer.price + '₽/ночь';
   adElement.querySelector('.popup__type').textContent = translateType(adArrayElement.offer.type);
   adElement.querySelector('.popup__text--capacity').textContent = 'Для ' + adArrayElement.offer.guests + ' гостей в ' + adArrayElement.offer.rooms + ' комнатах';
   adElement.querySelector('.popup__text--time').textContent = 'заезд после ' + adArrayElement.offer.checkin + ', выезд до ' + adArrayElement.offer.checkout;
@@ -105,57 +108,63 @@ var createAd = function(adArrayElement) {
   adElement.querySelector('.popup__description').textContent = adArrayElement.offer.description;
   removeChilds(adElement.querySelector('.popup__photos'));
   adElement.querySelector('.popup__photos').appendChild(generatePopupPhotos(adArrayElement.offer.photos));
-  
-  return adElement;
+  adElement.querySelector('.popup__description').textContent = adArrayElement.offer.description;
 
+  return adElement;
 }
-  
-var insertAd = function() {
+
+function insertAd() {
   var mapTokio = document.querySelector('.map');
   var referenceElement = document.querySelector('.map__filters-container');
-  
   var ad0 = createAd(ads[0]);
+
   mapTokio.insertBefore(ad0, referenceElement);
 }
-  
-  
-var getRandomNumber = function(min, max) {
+
+
+function getRandomNumber(min, max) {
+
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-  
-var generateAvatars = function() {
+
+function generateAvatars() {
   var listAvatars = [];
 
   for (var i = 1; i < NUMBER_OF_USERS + 1; i++) {
-    
     i = '0' + i;
     var avatar = 'img/avatars/user' + i + '.png';
     listAvatars.push(avatar);
-    
   }
-  
+
   return listAvatars;
 }
-  
-var getRandomElement = function(array) {
+
+function getRandomElement(array) {
+
   for (var i = 0; i < array.length; i++) {
     var randomIndex = Math.floor(Math.random() * array.length);
   }
+
   var randomElement = array[randomIndex];
+
   return randomElement;
 }
-  
-var compareRandom = function() {
+
+function compareRandom() {
+
   return Math.random() - 0.5;
 }
-  
-var getRandomArray = function(array) {
+
+function getRandomArray(array) {
   var clone = array.sort(compareRandom).slice();
+
   clone.length = getRandomNumber(1, array.length);
+
   return clone;
 }
-  
-var translateType = function(type) {
+
+function translateType(type) {
+
   switch (type) {
     case 'flat':
       return 'Квартира';
@@ -167,36 +176,52 @@ var translateType = function(type) {
       return type;
   }
 }
-  
-var removeChilds = function(element) {
+
+function removeChilds(element) {
+
   while (element.firstChild) {
     element.removeChild(element.firstChild);
-}
-  
-var generateIconsFeatures = function(arrayFeatures) {
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < arrayFeatures.length; i++) {
-    var feature = createIconFeature(arrayFeatures[i]);
-    fragment.appendChild(feature);
   }
+
+}
+
+function createIconFeature(feature) {
+  var iconFeature = document.createElement('li');
+  iconFeature.classList.add('popup__feature');
+  iconFeature.classList.add('popup__feature--' + feature);
+
+  return iconFeature;
+}
+
+function generateIconsFeatures(features) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < features.length; i++) {
+    var featureElement = createIconFeature(features[i]);
+    fragment.appendChild(featureElement);
+  }
+
   return fragment;
 }
 
-var generatePopupPhotos = function(arrayPhotos) {
+function generatePopupPhotos(arrayPhotos) {
   var fragment = document.createDocumentFragment();
+
   for (var i = 0; i < arrayPhotos.length; i++) {
     var photo = createPopupPhoto(arrayPhotos[i]);
     fragment.appendChild(photo);
   }
+
+  return fragment;
 }
-  
-var createPopupPhoto = function(photo) {
-  var popupPhoto = document.createElement(img);
+
+function createPopupPhoto(photo) {
+  var popupPhoto = document.createElement('img');
   popupPhoto.classList.add('popup__photo');
-  popupPhoto.setAttribute(width, 45);
-  popupPhoto.setAttribute(height, 40);
-  popupPhoto.setAttribute(alt, 'Фотография жилья');
-  popupPhoto.setAttribute(src, photo);
-  
+  popupPhoto.setAttribute('width', 45);
+  popupPhoto.setAttribute('height', 40);
+  popupPhoto.setAttribute('alt', 'Фотография жилья');
+  popupPhoto.setAttribute('src', photo);
+
   return popupPhoto;
 }
