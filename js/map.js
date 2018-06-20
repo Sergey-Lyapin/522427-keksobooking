@@ -113,8 +113,8 @@ function createPin(pinsArrayElement) {
   pinElement.querySelector('img').src = pinsArrayElement.author.avatar;
   pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
   pinElement.addEventListener('click', function () {
-    for (var i = 0; i < avatar.length; i++) {
-      if (pinElement.querySelector('img').src = ads[i].author.avatar) {
+    for (var i = 0; i < ads.length; i++) {
+      if (pinsArrayElement.author.avatar == ads[i].author.avatar) {
         insertAd(i);
       };
     };
@@ -157,18 +157,17 @@ function createAd(adArrayElement) {
   return adElement;
 }
 
-function insertAd(ind) {
+function insertAd(i) {
   var mapTokio = document.querySelector('.map');
   var referenceElement = document.querySelector('.map__filters-container');
 
-  var ad0 = createAd(ads[ind]);
+  var ad0 = createAd(ads[i]);
 
   mapTokio.insertBefore(ad0, referenceElement);
 }
 
 
 function getRandomNumber(min, max) {
-
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
