@@ -1,18 +1,27 @@
 'use strict';
 
 var NUMBER_OF_USERS = 8;
-var MIN_X = 300;
-var MAX_X = 900;
-var MIN_Y = 100;
-var MAX_Y = 500;
+var MIN_X = 0;
+var MAX_X = 1199;
+var MIN_Y = 130;
+var MAX_Y = 630;
 var MIN_PRICE = 1000;
 var MAX_PRICE = 1000000;
 var NUMBER_OF_ROOMS_MIN = 1;
 var NUMBER_OF_ROOMS_MAX = 5;
 var GUESTS_MIN = 1;
 var GUESTS_MAX = 20;
-var PIN_HEIGHT = 40;
-var PIN_WIDTH = 40;
+var PIN_HEIGHT = 70;
+var PIN_WIDTH = 50;
+var ROOM_PHOTO_HEIGHT = 40;
+var ROOM_PHOTO_WIDTH = 45;
+var PIN_MAIN_X = 570;
+var PIN_MAIN_Y = 375;
+var PIN_MAIN_HEIGHT = 156;
+var PIN_MAIN_WIDTH = 156;
+var PIN_POINT_GAP = 45;
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var ROOM_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 var ROOM_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -20,13 +29,40 @@ var ROOM_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http:/
 var AD_TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 
 var tokioMap = document.querySelector('.map');
+var pinMain = tokioMap.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var inputAddress = document.querySelector('#address');
 var ads = generateAds();
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 var adTemplate = document.querySelector('template').content.querySelector('.map__card');
 
-tokioMap.classList.remove('map--faded');
-insertPin();
-insertAd();
+
+inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT / 2));
+
+pinMain.addEventListener('mouseup', onPinmainMouseup);
+
+function onPinmainMouseup() {
+  var formFieldset = document.querySelectorAll('form fieldset');
+  var formSelect = document.querySelectorAll('form select');
+
+  tokioMap.classList.remove('map--faded');
+
+  for (var i = 0; i < formFieldset.length; i++) {
+    formFieldset[i].removeAttribute('disabled');
+  }
+
+  for (var j = 0; j < formSelect.length; j++) {
+    formSelect[j].removeAttribute('disabled');
+  }
+
+  inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT + PIN_POINT_GAP));
+
+  adForm.classList.remove('ad-form--disabled');
+
+  insertPin();
+
+  pinMain.removeEventListener('mouseup', onPinmainMouseup);
+}
 
 
 function generateAds() {
@@ -67,7 +103,6 @@ function generateAds() {
   return adsArray;
 }
 
-
 function createPin(pinsArrayElement) {
   var pinElement = pinTemplate.cloneNode(true);
 
@@ -75,8 +110,36 @@ function createPin(pinsArrayElement) {
   pinElement.style.top = (pinsArrayElement.location.y - PIN_HEIGHT) + 'px';
   pinElement.querySelector('img').src = pinsArrayElement.author.avatar;
   pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
+  pinElement.addEventListener('click', function () {
+    closeAd();
+    for (var i = 0; i < ads.length; i++) {
+      if (pinsArrayElement.author.avatar === ads[i].author.avatar) {
+        insertAd(i);
+      }
+    }
+  });
 
   return pinElement;
+}
+
+function closeAd() {
+  var popup = tokioMap.querySelector('.popup');
+  if (popup) {
+    tokioMap.removeChild(popup);
+  }
+  document.removeEventListener('keydown', onPopupEscPress);
+}
+
+function onPopupCloseEnterPress(evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeAd();
+  }
+}
+
+function onPopupEscPress(evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeAd();
+  }
 }
 
 function insertPin() {
@@ -92,7 +155,8 @@ function insertPin() {
 
 function createAd(adArrayElement) {
   var adElement = adTemplate.cloneNode(true);
-  var adAvatar = adTemplate.querySelector('.popup__avatar');
+  var adAvatar = adElement.querySelector('.popup__avatar');
+  var closeAdButton = adElement.querySelector('.popup__close');
 
   adAvatar.src = adArrayElement.author.avatar;
   adAvatar.alt = adArrayElement.offer.title;
@@ -109,21 +173,25 @@ function createAd(adArrayElement) {
   removeChilds(adElement.querySelector('.popup__photos'));
   adElement.querySelector('.popup__photos').appendChild(generatePopupPhotos(adArrayElement.offer.photos));
   adElement.querySelector('.popup__description').textContent = adArrayElement.offer.description;
+  closeAdButton.addEventListener('click', closeAd);
+  closeAdButton.addEventListener('keydown', onPopupCloseEnterPress);
+  document.addEventListener('keydown', onPopupEscPress);
 
   return adElement;
 }
 
-function insertAd() {
+function insertAd(i) {
   var mapTokio = document.querySelector('.map');
   var referenceElement = document.querySelector('.map__filters-container');
-  var ad0 = createAd(ads[0]);
+
+  var ad0 = createAd(ads[i]);
+
 
   mapTokio.insertBefore(ad0, referenceElement);
 }
 
 
 function getRandomNumber(min, max) {
-
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -172,6 +240,8 @@ function translateType(type) {
       return 'Бунгало';
     case 'house':
       return 'Дом';
+    case 'palace':
+      return 'Дворец';
     default:
       return type;
   }
@@ -218,8 +288,8 @@ function generatePopupPhotos(arrayPhotos) {
 function createPopupPhoto(photo) {
   var popupPhoto = document.createElement('img');
   popupPhoto.classList.add('popup__photo');
-  popupPhoto.setAttribute('width', 45);
-  popupPhoto.setAttribute('height', 40);
+  popupPhoto.setAttribute('width', ROOM_PHOTO_WIDTH);
+  popupPhoto.setAttribute('height', ROOM_PHOTO_HEIGHT);
   popupPhoto.setAttribute('alt', 'Фотография жилья');
   popupPhoto.setAttribute('src', photo);
 
