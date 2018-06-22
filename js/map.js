@@ -110,7 +110,7 @@ function createPin(pinsArrayElement) {
   pinElement.style.top = (pinsArrayElement.location.y - PIN_HEIGHT) + 'px';
   pinElement.querySelector('img').src = pinsArrayElement.author.avatar;
   pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
-  pinElement.addEventListener('click', function() {
+  pinElement.addEventListener('click', function () {
     closeAd();
     for (var i = 0; i < ads.length; i++) {
       if (pinsArrayElement.author.avatar === ads[i].author.avatar) {
