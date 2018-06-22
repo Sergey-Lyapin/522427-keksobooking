@@ -20,6 +20,8 @@ var PIN_MAIN_Y = 375;
 var PIN_MAIN_HEIGHT = 156;
 var PIN_MAIN_WIDTH = 156;
 var PIN_POINT_GAP = 45;
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var ROOM_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 var ROOM_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -63,6 +65,7 @@ function onPinmainMouseup() {
 
   insertPin();
 
+  pinMain.removeEventListener('mouseup', onPinmainMouseup);
 }
 
 
@@ -105,6 +108,8 @@ function generateAds() {
 }
 
 
+
+
 function createPin(pinsArrayElement) {
   var pinElement = pinTemplate.cloneNode(true);
 
@@ -113,15 +118,44 @@ function createPin(pinsArrayElement) {
   pinElement.querySelector('img').src = pinsArrayElement.author.avatar;
   pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
   pinElement.addEventListener('click', function () {
+    closeAd();
+    
     for (var i = 0; i < ads.length; i++) {
       if (pinsArrayElement.author.avatar == ads[i].author.avatar) {
         insertAd(i);
       };
     };
+    
   });
 
   return pinElement;
 }
+
+function closeAd() {
+  var popup = tokioMap.querySelector('.popup');
+  
+  if (popup) {
+    tokioMap.removeChild(popup);
+  };
+  
+  document.removeEventListener('keydown', onPopupEscPress);
+}
+
+function onPopupCloseEnterPress(evt) {
+  
+  if (evt.keyCode === ESC_ENTER) {
+    closeAd();
+  }
+  
+};
+
+function onPopupEscPress(evt) {
+  
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeAd();
+  }
+  
+};
 
 function insertPin() {
   var mapPins = document.querySelector('.map__pins');
@@ -136,7 +170,8 @@ function insertPin() {
 
 function createAd(adArrayElement) {
   var adElement = adTemplate.cloneNode(true);
-  var adAvatar = adTemplate.querySelector('.popup__avatar');
+  var adAvatar = adElement.querySelector('.popup__avatar');
+  var closeAdButton = adElement.querySelector('.popup__close');
 
   adAvatar.src = adArrayElement.author.avatar;
   adAvatar.alt = adArrayElement.offer.title;
@@ -153,6 +188,10 @@ function createAd(adArrayElement) {
   removeChilds(adElement.querySelector('.popup__photos'));
   adElement.querySelector('.popup__photos').appendChild(generatePopupPhotos(adArrayElement.offer.photos));
   adElement.querySelector('.popup__description').textContent = adArrayElement.offer.description;
+  
+  closeAdButton.addEventListener('click', closeAd);
+  closeAdButton.addEventListener('keydown', onPopupCloseEnterPress);
+  document.addEventListener('keydown', onPopupEscPress);
 
   return adElement;
 }
@@ -162,6 +201,7 @@ function insertAd(i) {
   var referenceElement = document.querySelector('.map__filters-container');
 
   var ad0 = createAd(ads[i]);
+
 
   mapTokio.insertBefore(ad0, referenceElement);
 }
