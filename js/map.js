@@ -112,13 +112,11 @@ function createPin(pinsArrayElement) {
   pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
   pinElement.addEventListener('click', function() {
     closeAd();
-    
     for (var i = 0; i < ads.length; i++) {
-      if(pinsArrayElement.author.avatar === ads[i].author.avatar) {
+      if (pinsArrayElement.author.avatar === ads[i].author.avatar) {
         insertAd(i);
       }
     }
-    
   });
 
   return pinElement;
@@ -126,29 +124,23 @@ function createPin(pinsArrayElement) {
 
 function closeAd() {
   var popup = tokioMap.querySelector('.popup');
-  
   if (popup) {
     tokioMap.removeChild(popup);
-  };
-  
+  }
   document.removeEventListener('keydown', onPopupEscPress);
 }
 
 function onPopupCloseEnterPress(evt) {
-  
   if (evt.keyCode === ENTER_KEYCODE) {
     closeAd();
   }
-  
-};
+}
 
 function onPopupEscPress(evt) {
-  
   if (evt.keyCode === ESC_KEYCODE) {
     closeAd();
   }
-  
-};
+}
 
 function insertPin() {
   var mapPins = document.querySelector('.map__pins');
@@ -181,7 +173,6 @@ function createAd(adArrayElement) {
   removeChilds(adElement.querySelector('.popup__photos'));
   adElement.querySelector('.popup__photos').appendChild(generatePopupPhotos(adArrayElement.offer.photos));
   adElement.querySelector('.popup__description').textContent = adArrayElement.offer.description;
-  
   closeAdButton.addEventListener('click', closeAd);
   closeAdButton.addEventListener('keydown', onPopupCloseEnterPress);
   document.addEventListener('keydown', onPopupEscPress);
