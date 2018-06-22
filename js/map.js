@@ -30,15 +30,11 @@ var AD_TITLES = ['Большая уютная квартира', 'Маленьк
 
 var tokioMap = document.querySelector('.map');
 var pinMain = tokioMap.querySelector('.map__pin--main');
-var mapPin = tokioMap.querySelectorAll('.map__pin img');
 var adForm = document.querySelector('.ad-form');
 var inputAddress = document.querySelector('#address');
 var ads = generateAds();
-var avatar = document.querySelectorAll('popup__avatar');
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 var adTemplate = document.querySelector('template').content.querySelector('.map__card');
-
-//insertAd();
 
 
 inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT / 2));
@@ -53,13 +49,13 @@ function onPinmainMouseup() {
 
   for (var i = 0; i < formFieldset.length; i++) {
     formFieldset[i].removeAttribute('disabled');
-  };
+  }
 
   for (var j = 0; j < formSelect.length; j++) {
     formSelect[j].removeAttribute('disabled');
   }
 
-  inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT + PIN_POINT_GAP))
+  inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT + PIN_POINT_GAP));
 
   adForm.classList.remove('ad-form--disabled');
 
@@ -107,9 +103,6 @@ function generateAds() {
   return adsArray;
 }
 
-
-
-
 function createPin(pinsArrayElement) {
   var pinElement = pinTemplate.cloneNode(true);
 
@@ -117,14 +110,14 @@ function createPin(pinsArrayElement) {
   pinElement.style.top = (pinsArrayElement.location.y - PIN_HEIGHT) + 'px';
   pinElement.querySelector('img').src = pinsArrayElement.author.avatar;
   pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
-  pinElement.addEventListener('click', function () {
+  pinElement.addEventListener('click', function() {
     closeAd();
     
     for (var i = 0; i < ads.length; i++) {
-      if (pinsArrayElement.author.avatar == ads[i].author.avatar) {
+      if(pinsArrayElement.author.avatar === ads[i].author.avatar) {
         insertAd(i);
-      };
-    };
+      }
+    }
     
   });
 
@@ -143,7 +136,7 @@ function closeAd() {
 
 function onPopupCloseEnterPress(evt) {
   
-  if (evt.keyCode === ESC_ENTER) {
+  if (evt.keyCode === ENTER_KEYCODE) {
     closeAd();
   }
   
