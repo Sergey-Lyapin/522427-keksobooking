@@ -296,6 +296,8 @@ function createPopupPhoto(photo) {
   return popupPhoto;
 }
 
+// Задание по валидации
+
 var timeInField = document.querySelector('#timein');
 var timeOutField = document.querySelector('#timeout');
 var apartmentTypeField = document.querySelector('#type');
