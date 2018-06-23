@@ -326,7 +326,7 @@ function roomsGuestValidation() {
   } else if ((roomNumberField.value === '2') && (capacityField.value !== '1') && (capacityField.value !== '2')) {
     capacityField.setCustomValidity('В двух комнатах не может поселиться более 2 гостей.');
   } else if ((roomNumberField.value === '3') && (capacityField.value !== '1') && (capacityField.value !== '2') && (capacityField.value !== '3')) {
-    capacityField.setCustomValidity('В двух комнатах не может поселиться более 3 гостей.');
+    capacityField.setCustomValidity('В трех комнатах не может поселиться более 3 гостей.');
   } else if ((roomNumberField.value === '100') && (capacityField.value !== '0')) {
     capacityField.setCustomValidity('Сто комнат предназначены не для гостей!');
   } else {
@@ -334,16 +334,16 @@ function roomsGuestValidation() {
   }
 }
 
-function syncTimeOut() {
-  timeInField.value = timeOutField.value;
-}
-
-function syncTimeIn() {
-  timeOutField.value = timeInField.value;
+function timeValidation() {
+  if (timeInField.value !== timeOutField.value) {
+    timeOutField.setCustomValidity('Время отъезда должно быть равно времени заезда!');
+  } else {
+    timeOutField.setCustomValidity('');
+  }
 }
 
 apartmentTypeField.addEventListener('change', setMinimalPrice);
 capacityField.addEventListener('change', roomsGuestValidation);
 roomNumberField.addEventListener('change', roomsGuestValidation);
-timeInField.addEventListener('change', syncTimeIn);
-timeOutField.addEventListener('change', syncTimeOut);
+timeInField.addEventListener('change', timeValidation);
+timeOutField.addEventListener('change', timeValidation);
