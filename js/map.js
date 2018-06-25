@@ -17,8 +17,6 @@ var ROOM_PHOTO_HEIGHT = 40;
 var ROOM_PHOTO_WIDTH = 45;
 var PIN_MAIN_X = 570;
 var PIN_MAIN_Y = 375;
-var PIN_MAIN_HEIGHT = 156;
-var PIN_MAIN_WIDTH = 156;
 var PIN_POINT_GAP = 45;
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
@@ -37,7 +35,7 @@ var pinTemplate = document.querySelector('template').content.querySelector('.map
 var adTemplate = document.querySelector('template').content.querySelector('.map__card');
 
 
-inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_HEIGHT));
+inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_HEIGHT - PIN_POINT_GAP));
 
 
 function onPinmainMouseup() {
@@ -59,8 +57,6 @@ function onPinmainMouseup() {
   insertPin();
 
 }
-
-
 
 function generateAds() {
   var adsArray = [];
@@ -377,7 +373,7 @@ function onMouseDown(evt) {
 
   function onMouseUp(upEvt) {
     upEvt.preventDefault();
-    onPinmainMouseup();   
+    onPinmainMouseup();
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
   }
