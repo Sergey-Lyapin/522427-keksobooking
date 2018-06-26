@@ -13,11 +13,13 @@ var GUESTS_MIN = 1;
 var GUESTS_MAX = 20;
 var PIN_HEIGHT = 70;
 var PIN_WIDTH = 50;
+var PIN_MAIN_WIDTH = 62;
+var PIN_MAIN_HEIGHT = 84;
 var ROOM_PHOTO_HEIGHT = 40;
 var ROOM_PHOTO_WIDTH = 45;
 var PIN_MAIN_X = 570;
 var PIN_MAIN_Y = 375;
-var PIN_POINT_GAP = 45;
+var PIN_POINT_GAP = 53;
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 var ROOM_TYPES = ['palace', 'flat', 'house', 'bungalo'];
@@ -35,7 +37,7 @@ var pinTemplate = document.querySelector('template').content.querySelector('.map
 var adTemplate = document.querySelector('template').content.querySelector('.map__card');
 
 
-inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_HEIGHT - PIN_POINT_GAP));
+inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT - PIN_POINT_GAP));
 
 
 function onPinmainMouseup() {
@@ -368,7 +370,7 @@ function onMouseDown(evt) {
     pinMain.style.top = (limitationY(newY)) + 'px';
 
 
-    inputAddress.setAttribute('value', (limitationX(newX) + PIN_WIDTH / 2) + ', ' + (limitationY(newY) + PIN_HEIGHT));
+    inputAddress.setAttribute('value', (limitationX(newX) + PIN_MAIN_WIDTH / 2) + ', ' + (limitationY(newY) + PIN_HEIGHT));
   }
 
   function onMouseUp(upEvt) {
@@ -387,8 +389,7 @@ pinMain.addEventListener('mousedown', onMouseDown);
 function limitationY(Ycoord) {
   if (Ycoord < MIN_Y) {
     Ycoord = MIN_Y;
-  }
-  if (Ycoord > MAX_Y) {
+  } else if (Ycoord > MAX_Y) {
     Ycoord = MAX_Y;
   }
   return Ycoord;
@@ -397,9 +398,8 @@ function limitationY(Ycoord) {
 function limitationX(Xcoord) {
   if (Xcoord < MIN_X) {
     Xcoord = MIN_X;
-  }
-  if (Xcoord > MAX_X) {
-    Xcoord = MAX_X;
+  } else if (Xcoord > MAX_X - PIN_MAIN_WIDTH) {
+    Xcoord = MAX_X - PIN_MAIN_WIDTH;
   }
   return Xcoord;
 }
