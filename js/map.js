@@ -226,6 +226,10 @@
 
     mapPins.appendChild(fragment);
   }
+  
+  // Устанавливаем начальные координаты метки
+  
+  inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT - PIN_POINT_GAP));
 
   // Описываем передвижение главной метки по карте
 
