@@ -195,7 +195,7 @@
     mapTokio.insertBefore(ad, referenceElement);
   }
 
-  // Создаём и вставляем на карту метки 
+  // Создаём и вставляем на карту метки
 
   function createPin(pinsArrayElement) {
     var pinElement = pinTemplate.cloneNode(true);
@@ -230,7 +230,7 @@
   // Устанавливаем начальные координаты метки
   
   inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT - PIN_POINT_GAP));
-
+  
   // Описываем передвижение главной метки по карте
 
   pinMain.addEventListener('mousedown', onMouseDown);
@@ -274,9 +274,9 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   }
-
-  // Функция, описывающая переход в активное состояние после перемещения метки 
-
+  
+  // Функция, описывающая переход в активное состояние после перемещения метки
+  
   function onPinmainMouseup() {
     var formFieldset = document.querySelectorAll('form fieldset');
     var formSelect = document.querySelectorAll('form select');
