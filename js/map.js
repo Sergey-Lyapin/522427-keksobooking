@@ -9,8 +9,6 @@
   var PIN_WIDTH = 50;
   var PIN_MAIN_WIDTH = 62;
   var PIN_MAIN_HEIGHT = 84;
-  var ROOM_PHOTO_HEIGHT = 40;
-  var ROOM_PHOTO_WIDTH = 45;
   var PIN_MAIN_X = 570;
   var PIN_MAIN_Y = 375;
   var PIN_POINT_GAP = 53;
@@ -23,54 +21,10 @@
   var inputAddress = document.querySelector('#address');
   var ads = window.generateAds();
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
-  var adTemplate = document.querySelector('template').content.querySelector('.map__card');
-
-  function createIconFeature(feature) {
-    var iconFeature = document.createElement('li');
-    iconFeature.classList.add('popup__feature');
-    iconFeature.classList.add('popup__feature--' + feature);
-
-    return iconFeature;
-  }
-
-  function generateIconsFeatures(features) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < features.length; i++) {
-      var featureElement = createIconFeature(features[i]);
-      fragment.appendChild(featureElement);
-    }
-
-    return fragment;
-  }
-
-  // Создаем верстку для изображений
-
-  function generatePopupPhotos(arrayPhotos) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < arrayPhotos.length; i++) {
-      var photo = createPopupPhoto(arrayPhotos[i]);
-      fragment.appendChild(photo);
-    }
-
-    return fragment;
-  }
-
-  function createPopupPhoto(photo) {
-    var popupPhoto = document.createElement('img');
-    popupPhoto.classList.add('popup__photo');
-    popupPhoto.setAttribute('width', ROOM_PHOTO_WIDTH);
-    popupPhoto.setAttribute('height', ROOM_PHOTO_HEIGHT);
-    popupPhoto.setAttribute('alt', 'Фотография жилья');
-    popupPhoto.setAttribute('src', photo);
-
-    return popupPhoto;
-  }
 
   // Функции для работы обработчиков на объявлении
 
-  function closeAd() {
+  window.closeAd = function () {
     var popup = tokioMap.querySelector('.popup');
     if (popup) {
       tokioMap.removeChild(popup);
@@ -78,15 +32,15 @@
     document.removeEventListener('keydown', onPopupEscPress);
   }
 
-  function onPopupCloseEnterPress(evt) {
+  window.onPopupCloseEnterPress = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      closeAd();
+      window.closeAd();
     }
   }
 
-  function onPopupEscPress(evt) {
+  window.onPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
-      closeAd();
+      window.closeAd();
     }
   }
 
@@ -94,7 +48,7 @@
     var mapTokio = document.querySelector('.map');
     var referenceElement = document.querySelector('.map__filters-container');
 
-    var ad = createAd(ads[i]);
+    var ad = window.createAd(ads[i]);
 
 
     mapTokio.insertBefore(ad, referenceElement);
@@ -110,7 +64,7 @@
     pinElement.querySelector('img').src = pinsArrayElement.author.avatar;
     pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
     pinElement.addEventListener('click', function () {
-      closeAd();
+      window.closeAd();
       for (var i = 0; i < ads.length; i++) {
         if (pinsArrayElement.author.avatar === ads[i].author.avatar) {
           insertAd(i);
