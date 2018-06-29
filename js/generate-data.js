@@ -27,7 +27,7 @@
 
       adsArray.push({
         'author': {
-          'avatar': generateAvatars()[i]
+          'avatar': window.generateAvatars()[i]
         },
 
         'offer': {

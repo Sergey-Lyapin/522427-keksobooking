@@ -41,7 +41,7 @@
     }
 
     return fragment;
-  };
+  }
 
   function createIconFeature(feature) {
     var iconFeature = document.createElement('li');
@@ -60,7 +60,7 @@
     }
 
     return fragment;
-  };
+  }
 
   function createPopupPhoto(photo) {
     var popupPhoto = document.createElement('img');

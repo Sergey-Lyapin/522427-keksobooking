@@ -29,20 +29,20 @@
     if (popup) {
       tokioMap.removeChild(popup);
     }
-    document.removeEventListener('keydown', onPopupEscPress);
-  }
+    document.removeEventListener('keydown', window.onPopupEscPress);
+  };
 
   window.onPopupCloseEnterPress = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       window.closeAd();
     }
-  }
+  };
 
   window.onPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       window.closeAd();
     }
-  }
+  };
 
   function insertAd(i) {
     var mapTokio = document.querySelector('.map');
