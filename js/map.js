@@ -25,12 +25,6 @@
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
   var adTemplate = document.querySelector('template').content.querySelector('.map__card');
 
-  // Создаём и вставляем карточку объявления
-
-
-
-  // Создаем иконки удобств
-
   function createIconFeature(feature) {
     var iconFeature = document.createElement('li');
     iconFeature.classList.add('popup__feature');
@@ -49,10 +43,6 @@
 
     return fragment;
   }
-
-  // Создаем список аватаров для объявления
-
-
 
   // Создаем верстку для изображений
 

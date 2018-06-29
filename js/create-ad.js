@@ -1,3 +1,5 @@
+'use strict';
+
 (function () {
   function createAd(adArrayElement) {
     var adElement = adTemplate.cloneNode(true);
