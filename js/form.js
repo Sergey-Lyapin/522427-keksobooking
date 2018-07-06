@@ -10,7 +10,6 @@
   var titleField = document.querySelector('#title');
   var descriptionField = document.querySelector('#description');
   var success = document.querySelector('.success');
-  var documentBody = document.querySelector('body');
 
   var typePriceDependency = {
     bungalo: '0',
@@ -50,8 +49,7 @@
   }
 
   window.adForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(window.adForm),
-      onSuccess, window.onError);
+    window.backend.save(new FormData(window.adForm), onSuccess, window.onError);
     evt.preventDefault();
   });
 
@@ -61,19 +59,19 @@
     descriptionField.value = '';
 
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    
     var ad = document.querySelector('.map__card');
 
     if (ad) {
       window.tokioMap.removeChild(ad);
-    };
-    window.pinMain.style.left = window.PIN_MAIN_X;
-    window.pinMain.style.top = window.PIN_MAIN_Y;
+    }
+
+    window.pinMain.style.left = window.PIN_MAIN_X + 'px';
+    window.pinMain.style.top = window.PIN_MAIN_Y + 'px';
     window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
 
     for (var y = 0; y < pins.length; y++) {
-      window.mapPins.removeChild(pins[y])
-    };
+      window.mapPins.removeChild(pins[y]);
+    }
 
     for (var i = 0; i < window.formFieldset.length; i++) {
       window.formFieldset[i].setAttribute('disabled', 'disabled');
@@ -92,7 +90,7 @@
   function onSuccessEscPress(evt) {
     if (evt.keyCode === window.ESC_KEYCODE) {
       success.classList.add('hidden');
-    };
+    }
   }
 
   apartmentTypeField.addEventListener('change', setMinimalPrice);

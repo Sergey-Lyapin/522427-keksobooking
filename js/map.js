@@ -23,6 +23,7 @@
   window.formFieldset = document.querySelectorAll('form fieldset');
   window.formSelect = document.querySelectorAll('form select');
   window.mapPins = document.querySelector('.map__pins');
+  var documentBody = document.querySelector('body');
 
 
   function onSuccessLoad(adsData) {
@@ -41,10 +42,10 @@
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.ESC_KEYCODE) {
         documentBody.removeChild(node);
-      };
-    })
+      }
+    });
     document.body.insertAdjacentElement('afterbegin', node);
-  }
+  };
 
   window.backend.load(onSuccessLoad, window.onError);
   // Функции для работы обработчиков на объявлении
