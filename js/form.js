@@ -69,10 +69,6 @@
     window.pinMain.style.top = window.PIN_MAIN_Y + 'px';
     window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
 
-    for (var y = 0; y < pins.length; y++) {
-      window.mapPins.removeChild(pins[y]);
-    }
-
     for (var i = 0; i < window.formFieldset.length; i++) {
       window.formFieldset[i].setAttribute('disabled', 'disabled');
     }
@@ -81,9 +77,14 @@
       window.formSelect[j].setAttribute('disabled', 'disabled');
     }
 
+    for (var k = 0; k < pins.length; k++) {
+      window.mapPins.removeChild(pins[k]);
+    }
+
     window.tokioMap.classList.add('map--faded');
     window.adForm.classList.add('ad-form--disabled');
     success.classList.remove('hidden');
+    window.isAppActivated = false;
   }
 
 

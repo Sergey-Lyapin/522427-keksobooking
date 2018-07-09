@@ -8,12 +8,13 @@
   var PIN_HEIGHT = 70;
   var PIN_WIDTH = 50;
   window.PIN_MAIN_WIDTH = 62;
-  window.PIN_MAIN_HEIGHT = 84;
+  window.PIN_MAIN_HEIGHT = 70;
   window.PIN_MAIN_X = 570;
   window.PIN_MAIN_Y = 375;
   window.PIN_POINT_GAP = 53;
   window.ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+  window.isAppActivated = false;
 
   window.tokioMap = document.querySelector('.map');
   window.pinMain = window.tokioMap.querySelector('.map__pin--main');
@@ -146,7 +147,11 @@
 
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
-      onPinmainMouseup();
+
+      if (!window.isAppActivated) {
+        onPinmainMouseup();
+      }
+
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     }
@@ -170,16 +175,17 @@
     window.adForm.classList.remove('ad-form--disabled');
 
     insertPin();
+    window.isAppActivated = true;
 
   }
 
   // Функции для ограничения перемещения метки по полю
 
   function limitationY(Ycoord) {
-    if (Ycoord < MIN_Y) {
-      Ycoord = MIN_Y;
-    } else if (Ycoord > MAX_Y) {
-      Ycoord = MAX_Y;
+    if (Ycoord < MIN_Y - window.PIN_MAIN_HEIGHT) {
+      Ycoord = MIN_Y - window.PIN_MAIN_HEIGHT;
+    } else if (Ycoord > MAX_Y - window.PIN_MAIN_HEIGHT) {
+      Ycoord = MAX_Y - window.PIN_MAIN_HEIGHT;
     }
     return Ycoord;
   }
