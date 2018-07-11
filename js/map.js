@@ -7,27 +7,54 @@
   var MAX_Y = 630;
   var PIN_HEIGHT = 70;
   var PIN_WIDTH = 50;
-  var PIN_MAIN_WIDTH = 62;
-  var PIN_MAIN_HEIGHT = 84;
-  var PIN_MAIN_X = 570;
-  var PIN_MAIN_Y = 375;
-  var PIN_POINT_GAP = 53;
-  var ESC_KEYCODE = 27;
+  window.PIN_MAIN_WIDTH = 62;
+  window.PIN_MAIN_HEIGHT = 70;
+  window.PIN_MAIN_X = 570;
+  window.PIN_MAIN_Y = 375;
+  window.PIN_POINT_GAP = 53;
+  window.ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+  window.isAppActivated = false;
 
-  var tokioMap = document.querySelector('.map');
-  var pinMain = tokioMap.querySelector('.map__pin--main');
-  var adForm = document.querySelector('.ad-form');
-  var inputAddress = document.querySelector('#address');
-  var ads = window.generateAds();
+  window.tokioMap = document.querySelector('.map');
+  window.pinMain = window.tokioMap.querySelector('.map__pin--main');
+  window.adForm = document.querySelector('.ad-form');
+  window.inputAddress = document.querySelector('#address');
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
+  window.formFieldset = document.querySelectorAll('form fieldset');
+  window.formSelect = document.querySelectorAll('form select');
+  window.mapPins = document.querySelector('.map__pins');
+  var documentBody = document.querySelector('body');
 
+
+  function onSuccessLoad(adsData) {
+    window.ads = adsData;
+  }
+
+  window.onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '35px';
+
+    node.textContent = errorMessage;
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.ESC_KEYCODE) {
+        documentBody.removeChild(node);
+      }
+    });
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend.load(onSuccessLoad, window.onError);
   // Функции для работы обработчиков на объявлении
 
   window.closeAd = function () {
-    var popup = tokioMap.querySelector('.popup');
+    var popup = window.tokioMap.querySelector('.popup');
     if (popup) {
-      tokioMap.removeChild(popup);
+      window.tokioMap.removeChild(popup);
     }
     document.removeEventListener('keydown', window.onPopupEscPress);
   };
@@ -39,7 +66,7 @@
   };
 
   window.onPopupEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === window.ESC_KEYCODE) {
       window.closeAd();
     }
   };
@@ -48,7 +75,7 @@
     var mapTokio = document.querySelector('.map');
     var referenceElement = document.querySelector('.map__filters-container');
 
-    var ad = window.createAd(ads[i]);
+    var ad = window.createAd(window.ads[i]);
 
 
     mapTokio.insertBefore(ad, referenceElement);
@@ -65,8 +92,8 @@
     pinElement.querySelector('img').alt = pinsArrayElement.offer.title;
     pinElement.addEventListener('click', function () {
       window.closeAd();
-      for (var i = 0; i < ads.length; i++) {
-        if (pinsArrayElement.author.avatar === ads[i].author.avatar) {
+      for (var i = 0; i < window.ads.length; i++) {
+        if (pinsArrayElement.location.x === window.ads[i].location.x && pinsArrayElement.location.y === window.ads[i].location.y) {
           insertAd(i);
         }
       }
@@ -76,19 +103,18 @@
   }
 
   function insertPin() {
-    var mapPins = document.querySelector('.map__pins');
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < ads.length; i++) {
-      fragment.appendChild(createPin(ads[i]));
+    for (var i = 0; i < window.ads.length; i++) {
+      fragment.appendChild(createPin(window.ads[i]));
     }
 
-    mapPins.appendChild(fragment);
+    window.mapPins.appendChild(fragment);
   }
   // Устанавливаем начальные координаты метки
-  inputAddress.setAttribute('value', (PIN_MAIN_X + PIN_MAIN_WIDTH / 2) + ', ' + (PIN_MAIN_Y + PIN_MAIN_HEIGHT - PIN_POINT_GAP));
+  window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
   // Описываем передвижение главной метки по карте
-  pinMain.addEventListener('mousedown', onMouseDown);
+  window.pinMain.addEventListener('mousedown', onMouseDown);
 
   function onMouseDown(evt) {
     evt.preventDefault();
@@ -104,24 +130,28 @@
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
       };
-      var newY = pinMain.offsetTop - shift.y;
-      var newX = pinMain.offsetLeft - shift.x;
+      var newY = window.pinMain.offsetTop - shift.y;
+      var newX = window.pinMain.offsetLeft - shift.x;
 
       startCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
 
-      pinMain.style.left = (limitationX(newX)) + 'px';
-      pinMain.style.top = (limitationY(newY)) + 'px';
+      window.pinMain.style.left = (limitationX(newX)) + 'px';
+      window.pinMain.style.top = (limitationY(newY)) + 'px';
 
 
-      inputAddress.setAttribute('value', (limitationX(newX) + PIN_MAIN_WIDTH / 2) + ', ' + (limitationY(newY) + PIN_HEIGHT));
+      window.inputAddress.setAttribute('value', (limitationX(newX) + window.PIN_MAIN_WIDTH / 2) + ', ' + (limitationY(newY) + PIN_HEIGHT));
     }
 
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
-      onPinmainMouseup();
+
+      if (!window.isAppActivated) {
+        onPinmainMouseup();
+      }
+
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     }
@@ -131,32 +161,31 @@
   }
   // Функция, описывающая переход в активное состояние после перемещения метки
   function onPinmainMouseup() {
-    var formFieldset = document.querySelectorAll('form fieldset');
-    var formSelect = document.querySelectorAll('form select');
 
-    tokioMap.classList.remove('map--faded');
+    window.tokioMap.classList.remove('map--faded');
 
-    for (var i = 0; i < formFieldset.length; i++) {
-      formFieldset[i].removeAttribute('disabled');
+    for (var i = 0; i < window.formFieldset.length; i++) {
+      window.formFieldset[i].removeAttribute('disabled');
     }
 
-    for (var j = 0; j < formSelect.length; j++) {
-      formSelect[j].removeAttribute('disabled');
+    for (var j = 0; j < window.formSelect.length; j++) {
+      window.formSelect[j].removeAttribute('disabled');
     }
 
-    adForm.classList.remove('ad-form--disabled');
+    window.adForm.classList.remove('ad-form--disabled');
 
     insertPin();
+    window.isAppActivated = true;
 
   }
 
   // Функции для ограничения перемещения метки по полю
 
   function limitationY(Ycoord) {
-    if (Ycoord < MIN_Y) {
-      Ycoord = MIN_Y;
-    } else if (Ycoord > MAX_Y) {
-      Ycoord = MAX_Y;
+    if (Ycoord < MIN_Y - window.PIN_MAIN_HEIGHT) {
+      Ycoord = MIN_Y - window.PIN_MAIN_HEIGHT;
+    } else if (Ycoord > MAX_Y - window.PIN_MAIN_HEIGHT) {
+      Ycoord = MAX_Y - window.PIN_MAIN_HEIGHT;
     }
     return Ycoord;
   }
@@ -164,8 +193,8 @@
   function limitationX(Xcoord) {
     if (Xcoord < MIN_X) {
       Xcoord = MIN_X;
-    } else if (Xcoord > MAX_X - PIN_MAIN_WIDTH) {
-      Xcoord = MAX_X - PIN_MAIN_WIDTH;
+    } else if (Xcoord > MAX_X - window.PIN_MAIN_WIDTH) {
+      Xcoord = MAX_X - window.PIN_MAIN_WIDTH;
     }
     return Xcoord;
   }
