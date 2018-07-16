@@ -10,6 +10,152 @@
   var titleField = document.querySelector('#title');
   var descriptionField = document.querySelector('#description');
   var success = document.querySelector('.success');
+  var typeSelect = document.querySelector('.map__filter:nth-child(1)');
+  var priceSelect = document.querySelector('.map__filter:nth-child(2)');
+  var roomsSelect = document.querySelector('.map__filter:nth-child(3)');
+  var guestsSelect = document.querySelector('.map__filter:nth-child(4)');
+  var wifiInput = document.querySelector('#filter-wifi');
+  var dishwasherInput = document.querySelector('#filter-dishwasher');
+  var parkingInput = document.querySelector('#filter-parking');
+  var washerInput = document.querySelector('#filter-washer');
+  var elevatorInput = document.querySelector('#filter-elevator');
+  var conditionerInput = document.querySelector('#filter-conditioner');
+
+  var typeToFilter = {
+    'palace': function (ad) {
+      return ad.offer.type === 'palace';
+    },
+    'flat': function (ad) {
+      return ad.offer.type === 'flat';
+    },
+    'house': function (ad) {
+      return ad.offer.type === 'house';
+    },
+    'bungalo': function (ad) {
+      return ad.offer.type === 'bungalo';
+    },
+    'any': function (ad) {
+      return ad;
+    }
+  };
+
+  var priceToFilter = {
+    'low': function (ad) {
+      return ad.offer.price < 10000;
+    },
+    'middle': function (ad) {
+      return ad.offer.price >= 10000 && ad.offer.price <= 50000;
+    },
+    'high': function (ad) {
+      return ad.offer.price > 50000;
+    },
+    'any': function (ad) {
+      return ad;
+    }
+  };
+
+  var roomsToFilter = {
+    '1': function (ad) {
+      return ad.offer.rooms === 1;
+    },
+    '2': function (ad) {
+      return ad.offer.rooms === 2;
+    },
+    '3': function (ad) {
+      return ad.offer.rooms === 3;
+    },
+    'any': function (ad) {
+      return ad;
+    }
+  };
+
+  var guestsToFilter = {
+    '0': function (ad) {
+      return ad.offer.guests === 0;
+    },
+    '1': function (ad) {
+      return ad.offer.guests === 1;
+    },
+    '2': function (ad) {
+      return ad.offer.guests === 2;
+    },
+    'any': function (ad) {
+      return ad;
+    }
+  };
+
+  var wifiToFilter = {
+    true: function (ad) {
+      return ad.offer.features.indexOf('wifi') != -1;
+    },
+
+    false: function (ad) {
+      return ad;
+    }
+  };
+
+  var dishwasherToFilter = {
+    true: function (ad) {
+      return ad.offer.features.indexOf('dishwasher') != -1;
+    },
+
+    false: function (ad) {
+      return ad;
+    }
+  };
+
+  var parkingToFilter = {
+    true: function (ad) {
+      return ad.offer.features.indexOf('parking') != -1;
+    },
+
+    false: function (ad) {
+      return ad;
+    }
+  };
+
+  var washerToFilter = {
+    true: function (ad) {
+      return ad.offer.features.indexOf('washer') != -1;
+    },
+
+    false: function (ad) {
+      return ad;
+    }
+  };
+
+  var elevatorToFilter = {
+    true: function (ad) {
+      return ad.offer.features.indexOf('elevator') != -1;
+    },
+
+    false: function (ad) {
+      return ad;
+    }
+  };
+
+  var conditionerToFilter = {
+    true: function (ad) {
+      return ad.offer.features.indexOf('conditioner') != -1;
+    },
+
+    false: function (ad) {
+      return ad;
+    }
+  };
+
+
+  function updatePins() {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    for (var i = 0; i < pins.length; i++) {
+      window.mapPins.removeChild(pins[i]);
+    }
+
+    var filteredData = window.ads.filter(typeToFilter[typeSelect.value]).filter(priceToFilter[priceSelect.value]).filter(roomsToFilter[roomsSelect.value]).filter(guestsToFilter[guestsSelect.value]).filter(wifiToFilter[wifiInput.checked]).filter(dishwasherToFilter[dishwasherInput.checked]).filter(parkingToFilter[parkingInput.checked]).filter(washerToFilter[washerInput.checked]).filter(elevatorToFilter[elevatorInput.checked]).filter(conditionerToFilter[conditionerInput.checked]);
+
+    insertPin(filteredData);
+  }
 
   var typePriceDependency = {
     bungalo: '0',
@@ -58,7 +204,6 @@
     titleField.value = '';
     descriptionField.value = '';
 
-    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     var ad = document.querySelector('.map__card');
 
     if (ad) {
@@ -76,6 +221,8 @@
     for (var j = 0; j < window.formSelect.length; j++) {
       window.formSelect[j].setAttribute('disabled', 'disabled');
     }
+
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     for (var k = 0; k < pins.length; k++) {
       window.mapPins.removeChild(pins[k]);
@@ -101,5 +248,15 @@
   timeOutField.addEventListener('change', timeValidation);
   document.addEventListener('keydown', onSuccessEscPress);
   document.addEventListener('click', onSuccessEscPress);
+  typeSelect.addEventListener('change', updatePins);
+  priceSelect.addEventListener('change', updatePins);
+  roomsSelect.addEventListener('change', updatePins);
+  guestsSelect.addEventListener('change', updatePins);
+  wifiInput.addEventListener('change', updatePins);
+  dishwasherInput.addEventListener('change', updatePins);
+  parkingInput.addEventListener('change', updatePins);
+  washerInput.addEventListener('change', updatePins);
+  elevatorInput.addEventListener('change', updatePins);
+  conditionerInput.addEventListener('change', updatePins);
 
 })();

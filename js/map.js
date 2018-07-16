@@ -28,8 +28,12 @@
 
 
   function onSuccessLoad(adsData) {
+    adsData.forEach(function (ad, index) {
+      ad.index = index;
+    });
     window.ads = adsData;
   }
+
 
   window.onError = function (errorMessage) {
     var node = document.createElement('div');
@@ -93,7 +97,7 @@
     pinElement.addEventListener('click', function () {
       window.closeAd();
       for (var i = 0; i < window.ads.length; i++) {
-        if (pinsArrayElement.location.x === window.ads[i].location.x && pinsArrayElement.location.y === window.ads[i].location.y) {
+        if (pinsArrayElement.index === window.ads[i].index) {
           insertAd(i);
         }
       }
@@ -102,11 +106,11 @@
     return pinElement;
   }
 
-  function insertPin() {
+  window.insertPin = function(data) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < window.ads.length; i++) {
-      fragment.appendChild(createPin(window.ads[i]));
+    for (var i = 0; i < data.length; i++) {
+      fragment.appendChild(createPin(data[i]));
     }
 
     window.mapPins.appendChild(fragment);
@@ -174,7 +178,7 @@
 
     window.adForm.classList.remove('ad-form--disabled');
 
-    insertPin();
+    insertPin(window.ads);
     window.isAppActivated = true;
 
   }
