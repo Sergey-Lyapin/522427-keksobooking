@@ -106,7 +106,7 @@
     return pinElement;
   }
 
-  window.insertPin = function(data) {
+  window.insertPin = function (data) {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < data.length; i++) {
@@ -114,7 +114,7 @@
     }
 
     window.mapPins.appendChild(fragment);
-  }
+  };
   // Устанавливаем начальные координаты метки
   window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
   // Описываем передвижение главной метки по карте
@@ -178,7 +178,7 @@
 
     window.adForm.classList.remove('ad-form--disabled');
 
-    insertPin(window.ads);
+    window.insertPin(window.ads);
     window.isAppActivated = true;
 
   }

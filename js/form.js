@@ -86,7 +86,7 @@
 
   var wifiToFilter = {
     true: function (ad) {
-      return ad.offer.features.indexOf('wifi') != -1;
+      return ad.offer.features.indexOf('wifi') !== -1;
     },
 
     false: function (ad) {
@@ -96,7 +96,7 @@
 
   var dishwasherToFilter = {
     true: function (ad) {
-      return ad.offer.features.indexOf('dishwasher') != -1;
+      return ad.offer.features.indexOf('dishwasher') !== -1;
     },
 
     false: function (ad) {
@@ -106,7 +106,7 @@
 
   var parkingToFilter = {
     true: function (ad) {
-      return ad.offer.features.indexOf('parking') != -1;
+      return ad.offer.features.indexOf('parking') !== -1;
     },
 
     false: function (ad) {
@@ -116,7 +116,7 @@
 
   var washerToFilter = {
     true: function (ad) {
-      return ad.offer.features.indexOf('washer') != -1;
+      return ad.offer.features.indexOf('washer') !== -1;
     },
 
     false: function (ad) {
@@ -126,7 +126,7 @@
 
   var elevatorToFilter = {
     true: function (ad) {
-      return ad.offer.features.indexOf('elevator') != -1;
+      return ad.offer.features.indexOf('elevator') !== -1;
     },
 
     false: function (ad) {
@@ -136,7 +136,7 @@
 
   var conditionerToFilter = {
     true: function (ad) {
-      return ad.offer.features.indexOf('conditioner') != -1;
+      return ad.offer.features.indexOf('conditioner') !== -1;
     },
 
     false: function (ad) {
@@ -154,7 +154,7 @@
 
     var filteredData = window.ads.filter(typeToFilter[typeSelect.value]).filter(priceToFilter[priceSelect.value]).filter(roomsToFilter[roomsSelect.value]).filter(guestsToFilter[guestsSelect.value]).filter(wifiToFilter[wifiInput.checked]).filter(dishwasherToFilter[dishwasherInput.checked]).filter(parkingToFilter[parkingInput.checked]).filter(washerToFilter[washerInput.checked]).filter(elevatorToFilter[elevatorInput.checked]).filter(conditionerToFilter[conditionerInput.checked]);
 
-    insertPin(filteredData);
+    window.insertPin(filteredData);
   }
 
   var typePriceDependency = {
