@@ -111,8 +111,8 @@
 
     for (var i = 0; i < 5; i++) {
       if (i > data.length - 1) {
-        break
-      };
+        break;
+      }
       fragment.appendChild(createPin(data[i]));
     }
 

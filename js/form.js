@@ -83,8 +83,8 @@
   function contains(where, what) {
     for (var i = 0; i < what.length; i++) {
       if (where.indexOf(what[i]) === -1) {
-        return false
-      };
+        return false;
+      }
     }
     return true;
   }
@@ -150,14 +150,6 @@
       capacityField.setCustomValidity('Сто комнат предназначены не для гостей!');
     } else {
       capacityField.setCustomValidity('');
-    }
-  }
-
-  function timeValidation() {
-    if (timeInField.value !== timeOutField.value) {
-      timeOutField.setCustomValidity('Время отъезда должно быть равно времени заезда!');
-    } else {
-      timeOutField.setCustomValidity('');
     }
   }
 
