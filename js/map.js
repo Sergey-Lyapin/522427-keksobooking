@@ -108,9 +108,10 @@
 
   window.insertPin = function (data) {
     var fragment = document.createDocumentFragment();
-    var slicedData = data.slice(0, 5);
-    for (var i = 0; i < slicedData.length; i++) {
-      fragment.appendChild(createPin(slicedData[i]));
+    var newData = data.slice();
+    newData = newData.splice(0, 5);
+    for (var i = 0; i < newData.length; i++) {
+      fragment.appendChild(createPin(newData[i]));
     }
 
     window.mapPins.appendChild(fragment);
