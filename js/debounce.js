@@ -14,5 +14,5 @@
         fun.apply(null, args);
       }, DEBOUNCE_INTERVAL);
     };
-  }
+  };
 })();

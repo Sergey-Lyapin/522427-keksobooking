@@ -110,7 +110,9 @@
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < 5; i++) {
-      if (i > data.length - 1) break;
+      if (i > data.length - 1) {
+        break
+      };
       fragment.appendChild(createPin(data[i]));
     }
 
