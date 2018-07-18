@@ -109,7 +109,8 @@
   window.insertPin = function (data) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < 5; i++) {
+      if (i > data.length - 1) break;
       fragment.appendChild(createPin(data[i]));
     }
 
