@@ -11,10 +11,10 @@
   var descriptionField = document.querySelector('#description');
   var success = document.querySelector('.success');
   var reset = document.querySelector('.ad-form__reset');
-  var typeSelect = document.querySelector('.map__filter:nth-child(1)');
-  var priceSelect = document.querySelector('.map__filter:nth-child(2)');
-  var roomsSelect = document.querySelector('.map__filter:nth-child(3)');
-  var guestsSelect = document.querySelector('.map__filter:nth-child(4)');
+  var typeSelect = document.querySelector('#housing-type');
+  var priceSelect = document.querySelector('#housing-price');
+  var roomsSelect = document.querySelector('#housing-rooms');
+  var guestsSelect = document.querySelector('#housing-guests');
   var featuresFieldset = document.querySelector('#housing-features');
 
   var typeToFilter = {
