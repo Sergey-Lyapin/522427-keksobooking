@@ -28,8 +28,12 @@
 
 
   function onSuccessLoad(adsData) {
+    adsData.forEach(function (ad, index) {
+      ad.index = index;
+    });
     window.ads = adsData;
   }
+
 
   window.onError = function (errorMessage) {
     var node = document.createElement('div');
@@ -93,7 +97,7 @@
     pinElement.addEventListener('click', function () {
       window.closeAd();
       for (var i = 0; i < window.ads.length; i++) {
-        if (pinsArrayElement.location.x === window.ads[i].location.x && pinsArrayElement.location.y === window.ads[i].location.y) {
+        if (pinsArrayElement.index === window.ads[i].index) {
           insertAd(i);
         }
       }
@@ -102,15 +106,16 @@
     return pinElement;
   }
 
-  function insertPin() {
+  window.insertPin = function (data) {
     var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < window.ads.length; i++) {
-      fragment.appendChild(createPin(window.ads[i]));
+    var newData = data.slice();
+    newData = newData.splice(0, 5);
+    for (var i = 0; i < newData.length; i++) {
+      fragment.appendChild(createPin(newData[i]));
     }
 
     window.mapPins.appendChild(fragment);
-  }
+  };
   // Устанавливаем начальные координаты метки
   window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
   // Описываем передвижение главной метки по карте
@@ -174,7 +179,7 @@
 
     window.adForm.classList.remove('ad-form--disabled');
 
-    insertPin();
+    window.insertPin(window.ads);
     window.isAppActivated = true;
 
   }
