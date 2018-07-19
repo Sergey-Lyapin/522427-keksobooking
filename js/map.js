@@ -52,7 +52,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.backend.load(onSuccessLoad, window.onError);
+  window.load(onSuccessLoad, window.onError);
   // Функции для работы обработчиков на объявлении
 
   window.closeAd = function () {

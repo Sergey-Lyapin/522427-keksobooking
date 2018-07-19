@@ -154,7 +154,7 @@
   }
 
   window.adForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(window.adForm), onSuccess, window.onError);
+    window.save(new FormData(window.adForm), onSuccess, window.onError);
     evt.preventDefault();
   });
 
