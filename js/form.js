@@ -122,7 +122,7 @@
       window.mapPins.removeChild(pins[i]);
     }
 
-    var filteredData = window.ads.filter(typeToFilter[window.typeSelect.value]).filter(window.priceToFilter[window.priceSelect.value]).filter(roomsToFilter[window.roomsSelect.value]).filter(guestsToFilter[window.guestsSelect.value]).filter(featuresFilter);
+    var filteredData = window.ads.filter(typeToFilter[window.typeSelect.value]).filter(priceToFilter[window.priceSelect.value]).filter(roomsToFilter[window.roomsSelect.value]).filter(guestsToFilter[window.guestsSelect.value]).filter(featuresFilter);
 
     window.insertPin(filteredData);
   };
@@ -133,7 +133,7 @@
     } else if ((window.roomNumberField.value === '2') && (window.capacityField.value !== '1') && (window.capacityField.value !== '2')) {
       window.capacityField.setCustomValidity('В двух комнатах не может поселиться более 2 гостей.');
     } else if ((window.roomNumberField.value === '3') && (window.capacityField.value !== '1') && (window.capacityField.value !== '2') && (window.capacityField.value !== '3')) {
-      capacityField.setCustomValidity('В трех комнатах не может поселиться более 3 гостей.');
+      window.capacityField.setCustomValidity('В трех комнатах не может поселиться более 3 гостей.');
     } else if ((window.roomNumberField.value === '100') && (window.capacityField.value !== '0')) {
       window.capacityField.setCustomValidity('Сто комнат предназначены не для гостей!');
     } else {
