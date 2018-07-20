@@ -204,7 +204,7 @@
     window.isAppActivated = false;
     window.adForm.removeEventListener('submit', window.onFormSubmit);
     window.formResetButton.removeEventListener('click', window.onReset);
-    window.timeInField.removeEventListfonener('change', window.syncTimeIn);
+    window.timeInField.removeEventListener('change', window.syncTimeIn);
     window.timeOutField.removeEventListener('change', window.syncTimeOut);
     window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
     window.capacityField.removeEventListener('change', window.roomsGuestValidate);
