@@ -22,7 +22,7 @@
   window.inputAddress = document.querySelector('#address');
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
   window.formFieldsets = document.querySelectorAll('form fieldset');
-  window.formSelects = document.querySelect orAll('form select');
+  window.formSelects = document.querySelectorAll('form select');
   window.mapPins = document.querySelector('.map__pins');
   var documentBody = document.querySelector('body');
 
