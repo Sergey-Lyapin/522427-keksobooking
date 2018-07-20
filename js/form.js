@@ -12,6 +12,11 @@
   var success = document.querySelector('.success');
   var reset = document.querySelector('.ad-form__reset');
   var typeSelect = document.querySelector('#housing-type');
+  var typeFormSelect = document.querySelector('#type');
+  var roomsFormSelect = document.querySelector('#room_number');
+  var guestsFormSelect = document.querySelector('#capacity');
+  var timeinFormSelect = document.querySelector('#timein');
+  var timeoutFormSelect = document.querySelector('#timeout');
   var priceSelect = document.querySelector('#housing-price');
   var roomsSelect = document.querySelector('#housing-rooms');
   var guestsSelect = document.querySelector('#housing-guests');
@@ -160,9 +165,14 @@
 
   function onSuccess() {
     priceField.value = '';
+    priceField.placeholder = 1000;
     titleField.value = '';
     descriptionField.value = '';
-
+    typeFormSelect.value = 'flat';
+    roomsFormSelect.value = '1';
+    guestsFormSelect.value = '3';
+    timeinFormSelect.value = '12:00'
+    timeoutFormSelect.value = '12:00'
     var ad = document.querySelector('.map__card');
 
     if (ad) {
@@ -186,6 +196,12 @@
     for (var k = 0; k < pins.length; k++) {
       window.mapPins.removeChild(pins[k]);
     }
+
+    var featuresInputs = document.querySelectorAll('.features input');
+
+    for (var l = 0; l < featuresInputs.length; l++) {
+      featuresInputs[l].checked = false;
+    };
 
     window.tokioMap.classList.add('map--faded');
     window.adForm.classList.add('ad-form--disabled');
@@ -195,8 +211,14 @@
 
   function onReset() {
     priceField.value = '';
+    priceField.placeholder = 1000;
     titleField.value = '';
     descriptionField.value = '';
+    typeFormSelect.value = 'flat';
+    roomsFormSelect.value = '1';
+    guestsFormSelect.value = '3';
+    timeinFormSelect.value = '12:00'
+    timeoutFormSelect.value = '12:00'
 
     var ad = document.querySelector('.map__card');
 
@@ -221,6 +243,12 @@
     for (var k = 0; k < pins.length; k++) {
       window.mapPins.removeChild(pins[k]);
     }
+
+    var featuresInputs = document.querySelectorAll('.features input');
+
+    for (var l = 0; l < featuresInputs.length; l++) {
+      featuresInputs[l].checked = false;
+    };
 
     window.tokioMap.classList.add('map--faded');
     window.adForm.classList.add('ad-form--disabled');
