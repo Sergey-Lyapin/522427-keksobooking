@@ -26,8 +26,6 @@
   window.mapPins = document.querySelector('.map__pins');
   var documentBody = document.querySelector('body');
 
-
-
   function onSuccessLoad(adsData) {
     adsData.forEach(function (ad, index) {
       ad.index = index;

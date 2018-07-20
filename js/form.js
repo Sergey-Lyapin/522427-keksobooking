@@ -122,42 +122,40 @@
       window.mapPins.removeChild(pins[i]);
     }
 
-    var filteredData = window.ads.filter(typeToFilter[typeSelect.value]).filter(priceToFilter[priceSelect.value]).filter(roomsToFilter[roomsSelect.value]).filter(guestsToFilter[guestsSelect.value]).filter(featuresFilter);
+    var filteredData = window.ads.filter(typeToFilter[window.typeSelect.value]).filter(window.priceToFilter[window.priceSelect.value]).filter(roomsToFilter[window.roomsSelect.value]).filter(guestsToFilter[window.guestsSelect.value]).filter(featuresFilter);
 
     window.insertPin(filteredData);
-  }
+  };
 
   window.roomsGuestValidation = function () {
-    if ((roomNumberField.value === '1') && (capacityField.value !== '1')) {
-      capacityField.setCustomValidity('В одной комнате может поселиться только один гость.');
-    } else if ((roomNumberField.value === '2') && (capacityField.value !== '1') && (capacityField.value !== '2')) {
-      capacityField.setCustomValidity('В двух комнатах не может поселиться более 2 гостей.');
-    } else if ((roomNumberField.value === '3') && (capacityField.value !== '1') && (capacityField.value !== '2') && (capacityField.value !== '3')) {
+    if ((window.roomNumberField.value === '1') && (window.capacityField.value !== '1')) {
+      window.capacityField.setCustomValidity('В одной комнате может поселиться только один гость.');
+    } else if ((window.roomNumberField.value === '2') && (window.capacityField.value !== '1') && (window.capacityField.value !== '2')) {
+      window.capacityField.setCustomValidity('В двух комнатах не может поселиться более 2 гостей.');
+    } else if ((window.roomNumberField.value === '3') && (window.capacityField.value !== '1') && (window.capacityField.value !== '2') && (window.capacityField.value !== '3')) {
       capacityField.setCustomValidity('В трех комнатах не может поселиться более 3 гостей.');
-    } else if ((roomNumberField.value === '100') && (capacityField.value !== '0')) {
-      capacityField.setCustomValidity('Сто комнат предназначены не для гостей!');
+    } else if ((window.roomNumberField.value === '100') && (window.capacityField.value !== '0')) {
+      window.capacityField.setCustomValidity('Сто комнат предназначены не для гостей!');
     } else {
-      capacityField.setCustomValidity('');
+      window.capacityField.setCustomValidity('');
     }
-  }
+  };
 
   window.setMinimalPrice = function () {
-    priceField.min = typePriceDependency[apartmentTypeField.value];
-    priceField.placeholder = typePriceDependency[apartmentTypeField.value];
-  }
+    priceField.min = typePriceDependency[window.apartmentTypeField.value];
+    priceField.placeholder = typePriceDependency[window.apartmentTypeField.value];
+  };
 
   window.roomsGuestValidation();
   window.setMinimalPrice();
 
-
-
   window.syncTimeOut = function () {
     window.timeInField.value = window.timeOutField.value;
-  }
+  };
 
   window.syncTimeIn = function () {
     window.timeOutField.value = window.timeInField.value;
-  }
+  };
 
 
   function onSuccess() {
@@ -168,8 +166,8 @@
     typeFormSelect.value = 'flat';
     roomsFormSelect.value = '1';
     guestsFormSelect.value = '3';
-    timeinFormSelect.value = '12:00'
-    timeoutFormSelect.value = '12:00'
+    timeinFormSelect.value = '12:00';
+    timeoutFormSelect.value = '12:00';
     var ad = document.querySelector('.map__card');
 
     if (ad) {
@@ -198,11 +196,11 @@
 
     for (var l = 0; l < featuresInputs.length; l++) {
       featuresInputs[l].checked = false;
-    };
+    }
 
     window.tokioMap.classList.add('map--faded');
     window.adForm.classList.add('ad-form--disabled');
-    success.classList.remove('hidden');
+    window.success.classList.remove('hidden');
     window.isAppActivated = false;
     window.adForm.removeEventListener('submit', window.onFormSubmit);
     window.reset.removeEventListener('click', window.onReset);
@@ -226,8 +224,8 @@
     typeFormSelect.value = 'flat';
     roomsFormSelect.value = '1';
     guestsFormSelect.value = '3';
-    timeinFormSelect.value = '12:00'
-    timeoutFormSelect.value = '12:00'
+    timeinFormSelect.value = '12:00';
+    timeoutFormSelect.value = '12:00';
 
     var ad = document.querySelector('.map__card');
 
@@ -257,7 +255,7 @@
 
     for (var l = 0; l < featuresInputs.length; l++) {
       featuresInputs[l].checked = false;
-    };
+    }
 
     window.tokioMap.classList.add('map--faded');
     window.adForm.classList.add('ad-form--disabled');
@@ -274,7 +272,7 @@
     window.roomsSelect.removeEventListener('change', window.debounce(window.updatePins));
     window.guestsSelect.removeEventListener('change', window.debounce(window.updatePins));
     window.featuresFieldset.removeEventListener('change', window.debounce(window.updatePins));
-  }
+  };
 
 
   window.onSuccessEscPress = function (evt) {
@@ -283,17 +281,17 @@
       document.removeEventListener('keydown', window.onSuccessEscPress);
       window.success.removeEventListener('click', window.onRandomAreaClick);
     }
-  }
+  };
 
   window.onRandomAreaClick = function () {
     window.success.classList.add('hidden');
     document.removeEventListener('keydown', window.onSuccessEscPress);
     window.success.removeEventListener('click', window.onRandomAreaClick);
-  }
+  };
 
   window.onFormSubmit = function (evt) {
     window.save(new FormData(window.adForm), onSuccess, window.onError);
     evt.preventDefault();
-  }
+  };
 
 })();
