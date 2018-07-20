@@ -279,14 +279,14 @@
     if (evt.keyCode === window.ESC_KEYCODE) {
       window.successPopup.classList.add('hidden');
       document.removeEventListener('keydown', window.onSuccessEscPress);
-      window.successPopup.removeEventListener('click', window.onRandomAreaClick);
+      window.successPopup.removeEventListener('click', window.onSuccessPopupClick);
     }
   };
 
-  window.onRandomAreaClick = function () {
+  window.onSuccessPopupClick = function () {
     window.successPopup.classList.add('hidden');
     document.removeEventListener('keydown', window.onSuccessEscPress);
-    window.successPopup.removeEventListener('click', window.onRandomAreaClick);
+    window.successPopup.removeEventListener('click', window.onSuccessPopupClick);
   };
 
   window.onFormSubmit = function (evt) {

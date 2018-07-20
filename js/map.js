@@ -182,7 +182,7 @@
     window.isAppActivated = true;
 
     document.addEventListener('keydown', window.onSuccessEscPress);
-    window.successPopup.addEventListener('click', window.onRandomAreaClick);
+    window.successPopup.addEventListener('click', window.onSuccessPopupClick);
     window.adForm.addEventListener('submit', window.onFormSubmit);
     window.formResetButton.addEventListener('click', window.onReset);
     window.apartmentTypeField.addEventListener('change', window.setMinimalPrice);
