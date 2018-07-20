@@ -101,7 +101,7 @@
     return true;
   }
 
-  function featuresFilter(ad) {
+  function filterFeatures(ad) {
     var featuresChecked = document.querySelectorAll('#housing-features input[type="checkbox"]:checked');
     var featuresCheckedValues = [].map.call(featuresChecked, function (feature) {
       return feature.value;
@@ -122,7 +122,7 @@
       window.mapPins.removeChild(pins[i]);
     }
 
-    var filteredData = window.ads.filter(TypeToFilter[window.typeSelect.value]).filter(PriceToFilter[window.priceSelect.value]).filter(RoomsToFilter[window.roomsSelect.value]).filter(GuestsToFilter[window.guestsSelect.value]).filter(featuresFilter);
+    var filteredData = window.ads.filter(TypeToFilter[window.typeSelect.value]).filter(PriceToFilter[window.priceSelect.value]).filter(RoomsToFilter[window.roomsSelect.value]).filter(GuestsToFilter[window.guestsSelect.value]).filter(filterFeatures);
 
     window.insertPin(filteredData);
   };
@@ -204,7 +204,7 @@
     window.isAppActivated = false;
     window.adForm.removeEventListener('submit', window.onFormSubmit);
     window.formResetButton.removeEventListener('click', window.onReset);
-    window.timeInField.removeEventListener('change', window.syncTimeIn);
+    window.timeInField.removeEventListfonener('change', window.syncTimeIn);
     window.timeOutField.removeEventListener('change', window.syncTimeOut);
     window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
     window.capacityField.removeEventListener('change', window.roomsGuestValidate);
@@ -265,8 +265,8 @@
     window.timeInField.removeEventListener('change', window.syncTimeIn);
     window.timeOutField.removeEventListener('change', window.syncTimeOut);
     window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
-    window.capacityField.removeEventListener('change', window.roomsGuestValidation);
-    window.roomNumberField.removeEventListener('change', window.roomsGuestValidation);
+    window.capacityField.removeEventListener('change', window.roomsGuestValidate);
+    window.roomNumberField.removeEventListener('change', window.roomsGuestValidate);
     window.typeSelect.removeEventListener('change', window.debounce(window.updatePins));
     window.priceSelect.removeEventListener('change', window.debounce(window.updatePins));
     window.roomsSelect.removeEventListener('change', window.debounce(window.updatePins));

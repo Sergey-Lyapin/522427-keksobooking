@@ -186,8 +186,8 @@
     window.adForm.addEventListener('submit', window.onFormSubmit);
     window.formResetButton.addEventListener('click', window.onReset);
     window.apartmentTypeField.addEventListener('change', window.setMinimalPrice);
-    window.capacityField.addEventListener('change', window.roomsGuestValidation);
-    window.roomNumberField.addEventListener('change', window.roomsGuestValidation);
+    window.capacityField.addEventListener('change', window.roomsGuestValidate);
+    window.roomNumberField.addEventListener('change', window.roomsGuestValidate);
     window.typeSelect.addEventListener('change', window.debounce(window.updatePins));
     window.priceSelect.addEventListener('change', window.debounce(window.updatePins));
     window.roomsSelect.addEventListener('change', window.debounce(window.updatePins));
