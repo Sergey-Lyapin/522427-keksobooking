@@ -21,8 +21,8 @@
   window.adForm = document.querySelector('.ad-form');
   window.inputAddress = document.querySelector('#address');
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
-  window.formFieldset = document.querySelectorAll('form fieldset');
-  window.formSelect = document.querySelectorAll('form select');
+  window.formFieldsets = document.querySelectorAll('form fieldset');
+  window.formSelects = document.querySelectorAll('form select');
   window.mapPins = document.querySelector('.map__pins');
   var documentBody = document.querySelector('body');
 
@@ -142,11 +142,11 @@
         y: moveEvt.clientY
       };
 
-      window.pinMain.style.left = (limitationX(newX)) + 'px';
-      window.pinMain.style.top = (limitationY(newY)) + 'px';
+      window.pinMain.style.left = (restrictX(newX)) + 'px';
+      window.pinMain.style.top = (restrictY(newY)) + 'px';
 
 
-      window.inputAddress.setAttribute('value', (limitationX(newX) + window.PIN_MAIN_WIDTH / 2) + ', ' + (limitationY(newY) + PIN_HEIGHT));
+      window.inputAddress.setAttribute('value', (restrictX(newX) + window.PIN_MAIN_WIDTH / 2) + ', ' + (restrictY(newY) + PIN_HEIGHT));
     }
 
     function onMouseUp(upEvt) {
@@ -168,12 +168,12 @@
 
     window.tokioMap.classList.remove('map--faded');
 
-    for (var i = 0; i < window.formFieldset.length; i++) {
-      window.formFieldset[i].removeAttribute('disabled');
+    for (var i = 0; i < window.formFieldsets.length; i++) {
+      window.formFieldsets[i].removeAttribute('disabled');
     }
 
-    for (var j = 0; j < window.formSelect.length; j++) {
-      window.formSelect[j].removeAttribute('disabled');
+    for (var j = 0; j < window.formSelects.length; j++) {
+      window.formSelects[j].removeAttribute('disabled');
     }
 
     window.adForm.classList.remove('ad-form--disabled');
@@ -197,7 +197,7 @@
 
   // Функции для ограничения перемещения метки по полю
 
-  function limitationY(Ycoord) {
+  function restrictY(Ycoord) {
     if (Ycoord < MIN_Y - window.PIN_MAIN_HEIGHT) {
       Ycoord = MIN_Y - window.PIN_MAIN_HEIGHT;
     } else if (Ycoord > MAX_Y - window.PIN_MAIN_HEIGHT) {
@@ -206,7 +206,7 @@
     return Ycoord;
   }
 
-  function limitationX(Xcoord) {
+  function restrictX(Xcoord) {
     if (Xcoord < MIN_X) {
       Xcoord = MIN_X;
     } else if (Xcoord > MAX_X - window.PIN_MAIN_WIDTH) {

@@ -22,7 +22,7 @@
   window.guestsSelect = document.querySelector('#housing-guests');
   window.featuresFieldset = document.querySelector('#housing-features');
 
-  var typeToFilter = {
+  var TypeToFilter = {
     'palace': function (ad) {
       return ad.offer.type === 'palace';
     },
@@ -40,7 +40,7 @@
     }
   };
 
-  var priceToFilter = {
+  var PriceToFilter = {
     'low': function (ad) {
       return ad.offer.price < 10000;
     },
@@ -55,7 +55,7 @@
     }
   };
 
-  var roomsToFilter = {
+  var RoomsToFilter = {
     '1': function (ad) {
       return ad.offer.rooms === 1;
     },
@@ -70,7 +70,7 @@
     }
   };
 
-  var guestsToFilter = {
+  var GuestsToFilter = {
     '0': function (ad) {
       return ad.offer.guests === 0;
     },
@@ -85,7 +85,7 @@
     }
   };
 
-  var typePriceDependency = {
+  var TypePriceDependency = {
     bungalo: '0',
     flat: '1000',
     house: '5000',
@@ -122,12 +122,12 @@
       window.mapPins.removeChild(pins[i]);
     }
 
-    var filteredData = window.ads.filter(typeToFilter[window.typeSelect.value]).filter(priceToFilter[window.priceSelect.value]).filter(roomsToFilter[window.roomsSelect.value]).filter(guestsToFilter[window.guestsSelect.value]).filter(featuresFilter);
+    var filteredData = window.ads.filter(TypeToFilter[window.typeSelect.value]).filter(PriceToFilter[window.priceSelect.value]).filter(RoomsToFilter[window.roomsSelect.value]).filter(GuestsToFilter[window.guestsSelect.value]).filter(featuresFilter);
 
     window.insertPin(filteredData);
   };
 
-  window.roomsGuestValidation = function () {
+  window.roomsGuestValidate = function () {
     if ((window.roomNumberField.value === '1') && (window.capacityField.value !== '1')) {
       window.capacityField.setCustomValidity('В одной комнате может поселиться только один гость.');
     } else if ((window.roomNumberField.value === '2') && (window.capacityField.value !== '1') && (window.capacityField.value !== '2')) {
@@ -142,11 +142,11 @@
   };
 
   window.setMinimalPrice = function () {
-    priceField.min = typePriceDependency[window.apartmentTypeField.value];
-    priceField.placeholder = typePriceDependency[window.apartmentTypeField.value];
+    priceField.min = TypePriceDependency[window.apartmentTypeField.value];
+    priceField.placeholder = TypePriceDependency[window.apartmentTypeField.value];
   };
 
-  window.roomsGuestValidation();
+  window.roomsGuestValidate();
   window.setMinimalPrice();
 
   window.syncTimeOut = function () {
@@ -178,12 +178,12 @@
     window.pinMain.style.top = window.PIN_MAIN_Y + 'px';
     window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
 
-    for (var i = 0; i < window.formFieldset.length; i++) {
-      window.formFieldset[i].setAttribute('disabled', 'disabled');
+    for (var i = 0; i < window.formFieldsets.length; i++) {
+      window.formFieldsets[i].setAttribute('disabled', 'disabled');
     }
 
-    for (var j = 0; j < window.formSelect.length; j++) {
-      window.formSelect[j].setAttribute('disabled', 'disabled');
+    for (var j = 0; j < window.formSelects.length; j++) {
+      window.formSelects[j].setAttribute('disabled', 'disabled');
     }
 
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -207,8 +207,8 @@
     window.timeInField.removeEventListener('change', window.syncTimeIn);
     window.timeOutField.removeEventListener('change', window.syncTimeOut);
     window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
-    window.capacityField.removeEventListener('change', window.roomsGuestValidation);
-    window.roomNumberField.removeEventListener('change', window.roomsGuestValidation);
+    window.capacityField.removeEventListener('change', window.roomsGuestValidate);
+    window.roomNumberField.removeEventListener('change', window.roomsGuestValidate);
     window.typeSelect.removeEventListener('change', window.debounce(window.updatePins));
     window.priceSelect.removeEventListener('change', window.debounce(window.updatePins));
     window.roomsSelect.removeEventListener('change', window.debounce(window.updatePins));
@@ -237,12 +237,12 @@
     window.pinMain.style.top = window.PIN_MAIN_Y + 'px';
     window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
 
-    for (var i = 0; i < window.formFieldset.length; i++) {
-      window.formFieldset[i].setAttribute('disabled', 'disabled');
+    for (var i = 0; i < window.formFieldsets.length; i++) {
+      window.formFieldsets[i].setAttribute('disabled', 'disabled');
     }
 
-    for (var j = 0; j < window.formSelect.length; j++) {
-      window.formSelect[j].setAttribute('disabled', 'disabled');
+    for (var j = 0; j < window.formSelects.length; j++) {
+      window.formSelects[j].setAttribute('disabled', 'disabled');
     }
 
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
