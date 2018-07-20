@@ -185,6 +185,8 @@
     window.successPopup.addEventListener('click', window.onSuccessPopupClick);
     window.adForm.addEventListener('submit', window.onFormSubmit);
     window.formResetButton.addEventListener('click', window.onReset);
+    window.timeInField.addEventListener('change', window.syncTimeIn);
+    window.timeOutField.addEventListener('change', window.syncTimeOut);
     window.apartmentTypeField.addEventListener('change', window.setMinimalPrice);
     window.capacityField.addEventListener('change', window.roomsGuestValidate);
     window.roomNumberField.addEventListener('change', window.roomsGuestValidate);
