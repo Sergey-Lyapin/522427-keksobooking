@@ -22,7 +22,7 @@
   window.inputAddress = document.querySelector('#address');
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');
   window.formFieldsets = document.querySelectorAll('form fieldset');
-  window.formSelects = document.querySelectorAll('form select');
+  window.formSelects = document.querySelect orAll('form select');
   window.mapPins = document.querySelector('.map__pins');
   var documentBody = document.querySelector('body');
 
@@ -182,9 +182,9 @@
     window.isAppActivated = true;
 
     document.addEventListener('keydown', window.onSuccessEscPress);
-    window.success.addEventListener('click', window.onRandomAreaClick);
+    window.successPopup.addEventListener('click', window.onRandomAreaClick);
     window.adForm.addEventListener('submit', window.onFormSubmit);
-    window.reset.addEventListener('click', window.onReset);
+    window.formResetButton.addEventListener('click', window.onReset);
     window.apartmentTypeField.addEventListener('change', window.setMinimalPrice);
     window.capacityField.addEventListener('change', window.roomsGuestValidation);
     window.roomNumberField.addEventListener('change', window.roomsGuestValidation);

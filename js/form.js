@@ -9,8 +9,8 @@
   window.capacityField = document.querySelector('#capacity');
   var titleField = document.querySelector('#title');
   var descriptionField = document.querySelector('#description');
-  window.success = document.querySelector('.success');
-  window.reset = document.querySelector('.ad-form__reset');
+  window.successPopup = document.querySelector('.success');
+  window.formResetButton = document.querySelector('.ad-form__reset');
   window.typeSelect = document.querySelector('#housing-type');
   var typeFormSelect = document.querySelector('#type');
   var roomsFormSelect = document.querySelector('#room_number');
@@ -200,10 +200,10 @@
 
     window.tokioMap.classList.add('map--faded');
     window.adForm.classList.add('ad-form--disabled');
-    window.success.classList.remove('hidden');
+    window.successPopup.classList.remove('hidden');
     window.isAppActivated = false;
     window.adForm.removeEventListener('submit', window.onFormSubmit);
-    window.reset.removeEventListener('click', window.onReset);
+    window.formResetButton.removeEventListener('click', window.onReset);
     window.timeInField.removeEventListener('change', window.syncTimeIn);
     window.timeOutField.removeEventListener('change', window.syncTimeOut);
     window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
@@ -261,7 +261,7 @@
     window.adForm.classList.add('ad-form--disabled');
     window.isAppActivated = false;
     window.adForm.removeEventListener('submit', window.onFormSubmit);
-    window.reset.removeEventListener('click', window.onReset);
+    window.formResetButton.removeEventListener('click', window.onReset);
     window.timeInField.removeEventListener('change', window.syncTimeIn);
     window.timeOutField.removeEventListener('change', window.syncTimeOut);
     window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
@@ -277,16 +277,16 @@
 
   window.onSuccessEscPress = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE) {
-      window.success.classList.add('hidden');
+      window.successPopup.classList.add('hidden');
       document.removeEventListener('keydown', window.onSuccessEscPress);
-      window.success.removeEventListener('click', window.onRandomAreaClick);
+      window.successPopup.removeEventListener('click', window.onRandomAreaClick);
     }
   };
 
   window.onRandomAreaClick = function () {
-    window.success.classList.add('hidden');
+    window.successPopup.classList.add('hidden');
     document.removeEventListener('keydown', window.onSuccessEscPress);
-    window.success.removeEventListener('click', window.onRandomAreaClick);
+    window.successPopup.removeEventListener('click', window.onRandomAreaClick);
   };
 
   window.onFormSubmit = function (evt) {
