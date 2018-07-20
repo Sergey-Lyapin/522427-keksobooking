@@ -27,6 +27,7 @@
   var documentBody = document.querySelector('body');
 
 
+
   function onSuccessLoad(adsData) {
     adsData.forEach(function (ad, index) {
       ad.index = index;
@@ -182,6 +183,18 @@
     window.insertPin(window.ads);
     window.isAppActivated = true;
 
+    document.addEventListener('keydown', window.onSuccessEscPress);
+    window.success.addEventListener('click', window.onRandomAreaClick);
+    window.adForm.addEventListener('submit', window.onFormSubmit);
+    window.reset.addEventListener('click', window.onReset);
+    window.apartmentTypeField.addEventListener('change', window.setMinimalPrice);
+    window.capacityField.addEventListener('change', window.roomsGuestValidation);
+    window.roomNumberField.addEventListener('change', window.roomsGuestValidation);
+    window.typeSelect.addEventListener('change', window.debounce(window.updatePins));
+    window.priceSelect.addEventListener('change', window.debounce(window.updatePins));
+    window.roomsSelect.addEventListener('change', window.debounce(window.updatePins));
+    window.guestsSelect.addEventListener('change', window.debounce(window.updatePins));
+    window.featuresFieldset.addEventListener('change', window.debounce(window.updatePins));
   }
 
   // Функции для ограничения перемещения метки по полю

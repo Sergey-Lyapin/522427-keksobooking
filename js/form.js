@@ -1,26 +1,26 @@
 'use strict';
 
 (function () {
-  var timeInField = document.querySelector('#timein');
-  var timeOutField = document.querySelector('#timeout');
-  var apartmentTypeField = document.querySelector('#type');
+  window.timeInField = document.querySelector('#timein');
+  window.timeOutField = document.querySelector('#timeout');
+  window.apartmentTypeField = document.querySelector('#type');
   var priceField = document.querySelector('#price');
-  var roomNumberField = document.querySelector('#room_number');
-  var capacityField = document.querySelector('#capacity');
+  window.roomNumberField = document.querySelector('#room_number');
+  window.capacityField = document.querySelector('#capacity');
   var titleField = document.querySelector('#title');
   var descriptionField = document.querySelector('#description');
-  var success = document.querySelector('.success');
-  var reset = document.querySelector('.ad-form__reset');
-  var typeSelect = document.querySelector('#housing-type');
+  window.success = document.querySelector('.success');
+  window.reset = document.querySelector('.ad-form__reset');
+  window.typeSelect = document.querySelector('#housing-type');
   var typeFormSelect = document.querySelector('#type');
   var roomsFormSelect = document.querySelector('#room_number');
   var guestsFormSelect = document.querySelector('#capacity');
   var timeinFormSelect = document.querySelector('#timein');
   var timeoutFormSelect = document.querySelector('#timeout');
-  var priceSelect = document.querySelector('#housing-price');
-  var roomsSelect = document.querySelector('#housing-rooms');
-  var guestsSelect = document.querySelector('#housing-guests');
-  var featuresFieldset = document.querySelector('#housing-features');
+  window.priceSelect = document.querySelector('#housing-price');
+  window.roomsSelect = document.querySelector('#housing-rooms');
+  window.guestsSelect = document.querySelector('#housing-guests');
+  window.featuresFieldset = document.querySelector('#housing-features');
 
   var typeToFilter = {
     'palace': function (ad) {
@@ -85,6 +85,13 @@
     }
   };
 
+  var typePriceDependency = {
+    bungalo: '0',
+    flat: '1000',
+    house: '5000',
+    palace: '10000'
+  };
+
   function contains(where, what) {
     for (var i = 0; i < what.length; i++) {
       if (where.indexOf(what[i]) === -1) {
@@ -102,7 +109,7 @@
     return contains(ad.offer.features, featuresCheckedValues);
   }
 
-  function updatePins() {
+  window.updatePins = function () {
     var popup = window.tokioMap.querySelector('.popup');
 
     if (popup) {
@@ -120,31 +127,7 @@
     window.insertPin(filteredData);
   }
 
-  var typePriceDependency = {
-    bungalo: '0',
-    flat: '1000',
-    house: '5000',
-    palace: '10000'
-  };
-
-  roomsGuestValidation();
-  setMinimalPrice();
-
-  function setMinimalPrice() {
-    priceField.min = typePriceDependency[apartmentTypeField.value];
-    priceField.placeholder = typePriceDependency[apartmentTypeField.value];
-  }
-
-  function syncTimeOut() {
-    timeInField.value = timeOutField.value;
-  }
-
-  function syncTimeIn() {
-    timeOutField.value = timeInField.value;
-  }
-
-
-  function roomsGuestValidation() {
+  window.roomsGuestValidation = function () {
     if ((roomNumberField.value === '1') && (capacityField.value !== '1')) {
       capacityField.setCustomValidity('В одной комнате может поселиться только один гость.');
     } else if ((roomNumberField.value === '2') && (capacityField.value !== '1') && (capacityField.value !== '2')) {
@@ -158,10 +141,24 @@
     }
   }
 
-  window.adForm.addEventListener('submit', function (evt) {
-    window.save(new FormData(window.adForm), onSuccess, window.onError);
-    evt.preventDefault();
-  });
+  window.setMinimalPrice = function () {
+    priceField.min = typePriceDependency[apartmentTypeField.value];
+    priceField.placeholder = typePriceDependency[apartmentTypeField.value];
+  }
+
+  window.roomsGuestValidation();
+  window.setMinimalPrice();
+
+
+
+  window.syncTimeOut = function () {
+    window.timeInField.value = window.timeOutField.value;
+  }
+
+  window.syncTimeIn = function () {
+    window.timeOutField.value = window.timeInField.value;
+  }
+
 
   function onSuccess() {
     priceField.value = '';
@@ -207,9 +204,21 @@
     window.adForm.classList.add('ad-form--disabled');
     success.classList.remove('hidden');
     window.isAppActivated = false;
+    window.adForm.removeEventListener('submit', window.onFormSubmit);
+    window.reset.removeEventListener('click', window.onReset);
+    window.timeInField.removeEventListener('change', window.syncTimeIn);
+    window.timeOutField.removeEventListener('change', window.syncTimeOut);
+    window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
+    window.capacityField.removeEventListener('change', window.roomsGuestValidation);
+    window.roomNumberField.removeEventListener('change', window.roomsGuestValidation);
+    window.typeSelect.removeEventListener('change', window.debounce(window.updatePins));
+    window.priceSelect.removeEventListener('change', window.debounce(window.updatePins));
+    window.roomsSelect.removeEventListener('change', window.debounce(window.updatePins));
+    window.guestsSelect.removeEventListener('change', window.debounce(window.updatePins));
+    window.featuresFieldset.removeEventListener('change', window.debounce(window.updatePins));
   }
 
-  function onReset() {
+  window.onReset = function () {
     priceField.value = '';
     priceField.placeholder = 1000;
     titleField.value = '';
@@ -253,31 +262,38 @@
     window.tokioMap.classList.add('map--faded');
     window.adForm.classList.add('ad-form--disabled');
     window.isAppActivated = false;
+    window.adForm.removeEventListener('submit', window.onFormSubmit);
+    window.reset.removeEventListener('click', window.onReset);
+    window.timeInField.removeEventListener('change', window.syncTimeIn);
+    window.timeOutField.removeEventListener('change', window.syncTimeOut);
+    window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
+    window.capacityField.removeEventListener('change', window.roomsGuestValidation);
+    window.roomNumberField.removeEventListener('change', window.roomsGuestValidation);
+    window.typeSelect.removeEventListener('change', window.debounce(window.updatePins));
+    window.priceSelect.removeEventListener('change', window.debounce(window.updatePins));
+    window.roomsSelect.removeEventListener('change', window.debounce(window.updatePins));
+    window.guestsSelect.removeEventListener('change', window.debounce(window.updatePins));
+    window.featuresFieldset.removeEventListener('change', window.debounce(window.updatePins));
   }
 
 
-  function onSuccessEscPress(evt) {
+  window.onSuccessEscPress = function (evt) {
     if (evt.keyCode === window.ESC_KEYCODE) {
-      success.classList.add('hidden');
+      window.success.classList.add('hidden');
+      document.removeEventListener('keydown', window.onSuccessEscPress);
+      window.success.removeEventListener('click', window.onRandomAreaClick);
     }
   }
 
-  function onRandomAreaClick() {
-    success.classList.add('hidden');
+  window.onRandomAreaClick = function () {
+    window.success.classList.add('hidden');
+    document.removeEventListener('keydown', window.onSuccessEscPress);
+    window.success.removeEventListener('click', window.onRandomAreaClick);
   }
 
-  apartmentTypeField.addEventListener('change', setMinimalPrice);
-  capacityField.addEventListener('change', roomsGuestValidation);
-  roomNumberField.addEventListener('change', roomsGuestValidation);
-  timeInField.addEventListener('change', syncTimeIn);
-  timeOutField.addEventListener('change', syncTimeOut);
-  document.addEventListener('keydown', onSuccessEscPress);
-  document.addEventListener('click', onRandomAreaClick);
-  reset.addEventListener('click', onReset);
-  typeSelect.addEventListener('change', window.debounce(updatePins));
-  priceSelect.addEventListener('change', window.debounce(updatePins));
-  roomsSelect.addEventListener('change', window.debounce(updatePins));
-  guestsSelect.addEventListener('change', window.debounce(updatePins));
-  featuresFieldset.addEventListener('change', window.debounce(updatePins));
+  window.onFormSubmit = function (evt) {
+    window.save(new FormData(window.adForm), onSuccess, window.onError);
+    evt.preventDefault();
+  }
 
 })();
