@@ -103,14 +103,12 @@
       });
 
       var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-      
-      pins.forEach(function(item){
+      pins.forEach(function (item) {
         window.map.mapPins.removeChild(item);
-      })
+      });
 
       var featuresInputs = document.querySelectorAll('.features input');
-      
-      featuresInputs.forEach(function(item){
+      featuresInputs.forEach(function (item) {
         item.checked = false;
       });
 
@@ -235,11 +233,9 @@
   function contains(where, what) {
     for (var i = 0; i < what.length; i++) {
       if (where.indexOf(what[i]) === -1) {
-        
         return false;
       }
     }
-    
     return true;
   }
 
@@ -248,7 +244,6 @@
     var featuresCheckedValues = [].map.call(featuresChecked, function (feature) {
       return feature.value;
     });
-    
     return contains(ad.offer.features, featuresCheckedValues);
   }
 

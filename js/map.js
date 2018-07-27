@@ -27,12 +27,12 @@
     mapPins: document.querySelector('.map__pins'),
 
     onError: function (errorMessage) {
-      var node = document.createElement('div')
-      node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;'
-      node.style.position = 'absolute'
-      node.style.left = 0
-      node.style.right = 0
-      node.style.fontSize = '35px'
+      var node = document.createElement('div');
+      node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+      node.style.position = 'absolute';
+      node.style.left = 0;
+      node.style.right = 0;
+      node.style.fontSize = '35px';
 
       node.textContent = errorMessage;
       document.addEventListener('keydown', function (evt) {
@@ -74,7 +74,7 @@
       window.map.mapPins.appendChild(fragment);
     }
 
-  }
+  };
 
 
   var pinTemplate = document.querySelector('template').content.querySelector('.map__pin');

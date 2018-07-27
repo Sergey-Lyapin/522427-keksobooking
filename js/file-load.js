@@ -43,11 +43,10 @@
         if (i === 0) {
           var previewField = document.querySelector('.ad-form__photo');
           photosPreviewСontainer.removeChild(previewField);
-        };
-
+        }
 
         var newPhotoDiv = document.createElement('div');
-        newPhotoDiv.className = "ad-form__photo";
+        newPhotoDiv.className = 'ad-form__photo';
         var newPhotoImg = document.createElement('img');
         newPhotoImg.setAttribute('width', '70');
         newPhotoImg.setAttribute('height', '70');
