@@ -1,26 +1,166 @@
 'use strict';
 
 (function () {
-  window.timeInField = document.querySelector('#timein');
-  window.timeOutField = document.querySelector('#timeout');
-  window.apartmentTypeField = document.querySelector('#type');
+
+  window.form = {
+    timeInField: document.querySelector('#timein'),
+    timeOutField: document.querySelector('#timeout'),
+    apartmentTypeField: document.querySelector('#type'),
+    roomNumberField: document.querySelector('#room_number'),
+    capacityField: document.querySelector('#capacity'),
+    successPopup: document.querySelector('.success'),
+    formResetButton: document.querySelector('.ad-form__reset'),
+    typeSelect: document.querySelector('#housing-type'),
+    priceSelect: document.querySelector('#housing-price'),
+    roomsSelect: document.querySelector('#housing-rooms'),
+    guestsSelect: document.querySelector('#housing-guests'),
+    featuresFieldset: document.querySelector('#housing-features'),
+
+    updatePins: function () {
+      var popup = window.map.tokioMap.querySelector('.popup');
+
+      if (popup) {
+        window.map.tokioMap.removeChild(popup);
+      }
+
+      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+      pins.forEach(function (item) {
+        window.map.mapPins.removeChild(item);
+      });
+
+      var filteredData = window.ads.filter(TypeToFilter[window.form.typeSelect.value]).filter(PriceToFilter[window.form.priceSelect.value]).filter(RoomsToFilter[window.form.roomsSelect.value]).filter(GuestsToFilter[window.form.guestsSelect.value]).filter(filterFeatures);
+
+      window.map.insertPin(filteredData);
+    },
+
+    roomsGuestValidate: function () {
+
+      if ((window.form.roomNumberField.value === '1') && (window.form.capacityField.value !== '1')) {
+        window.form.capacityField.setCustomValidity('В одной комнате может поселиться только один гость.');
+      } else {
+
+        if ((window.form.roomNumberField.value === '2') && (window.form.capacityField.value !== '1') && (window.form.capacityField.value !== '2')) {
+          window.form.capacityField.setCustomValidity('В двух комнатах не может поселиться более 2 гостей.');
+        } else {
+
+          if ((window.form.roomNumberField.value === '3') && (window.form.capacityField.value !== '1') && (window.form.capacityField.value !== '2') && (window.form.capacityField.value !== '3')) {
+
+            window.form.capacityField.setCustomValidity('В трех комнатах не может поселиться более 3 гостей.');
+
+          } else {
+
+            if ((window.form.roomNumberField.value === '100') && (window.form.capacityField.value !== '0')) {
+              window.form.capacityField.setCustomValidity('Сто комнат предназначены не для гостей!');
+            } else {
+              window.form.capacityField.setCustomValidity('');
+            }
+          }
+        }
+      }
+    },
+
+    setMinimalPrice: function () {
+      priceField.min = TypePriceDependency[window.form.apartmentTypeField.value];
+      priceField.placeholder = TypePriceDependency[window.form.apartmentTypeField.value];
+    },
+
+    syncTimeOut: function () {
+      window.form.timeInField.value = window.form.timeOutField.value;
+    },
+
+    syncTimeIn: function () {
+      window.form.timeOutField.value = window.form.timeInField.value;
+    },
+
+    onReset: function () {
+      priceField.value = '';
+      priceField.placeholder = 1000;
+      titleField.value = '';
+      descriptionField.value = '';
+      typeFormSelect.value = 'flat';
+      roomsFormSelect.value = '1';
+      guestsFormSelect.value = '3';
+      timeinFormSelect.value = '12:00';
+      timeoutFormSelect.value = '12:00';
+
+      var ad = document.querySelector('.map__card');
+
+      if (ad) {
+        window.map.tokioMap.removeChild(ad);
+      }
+
+      window.map.pinMain.style.left = window.map.PIN_MAIN_X + 'px';
+      window.map.pinMain.style.top = window.map.PIN_MAIN_Y + 'px';
+      window.map.inputAddress.setAttribute('value', (window.map.PIN_MAIN_X + window.map.PIN_MAIN_WIDTH / 2) + ', ' + (window.map.PIN_MAIN_Y + window.map.PIN_MAIN_HEIGHT - window.map.PIN_POINT_GAP));
+
+      window.map.formFieldsets.forEach(function (item) {
+        item.setAttribute('disabled', 'disabled');
+      });
+
+      window.map.formSelects.forEach(function (item) {
+        item.setAttribute('disabled', 'disabled');
+      });
+
+      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      
+      pins.forEach(function(item){
+        window.map.mapPins.removeChild(item);
+      })
+
+      var featuresInputs = document.querySelectorAll('.features input');
+      
+      featuresInputs.forEach(function(item){
+        item.checked = false;
+      });
+
+      window.map.tokioMap.classList.add('map--faded');
+      window.map.adForm.classList.add('ad-form--disabled');
+      window.form.isAppActivated = false;
+      window.map.adForm.removeEventListener('submit', window.form.onFormSubmit);
+      window.form.formResetButton.removeEventListener('click', window.form.onReset);
+      window.form.timeInField.removeEventListener('change', window.form.syncTimeIn);
+      window.form.timeOutField.removeEventListener('change', window.form.syncTimeOut);
+      window.form.apartmentTypeField.removeEventListener('change', window.form.setMinimalPrice);
+      window.form.capacityField.removeEventListener('change', window.form.roomsGuestValidate);
+      window.form.roomNumberField.removeEventListener('change', window.form.roomsGuestValidate);
+      window.form.typeSelect.removeEventListener('change', window.debounce(window.form.updatePins));
+      window.form.priceSelect.removeEventListener('change', window.debounce(window.form.updatePins));
+      window.form.roomsSelect.removeEventListener('change', window.debounce(window.form.updatePins));
+      window.form.guestsSelect.removeEventListener('change', window.debounce(window.form.updatePins));
+      window.form.featuresFieldset.removeEventListener('change', window.debounce(window.form.updatePins));
+    },
+
+    onSuccessEscPress: function (evt) {
+      if (evt.keyCode === window.map.ESC_KEYCODE) {
+        window.form.successPopup.classList.add('hidden');
+        document.removeEventListener('keydown', window.form.onSuccessEscPress);
+        window.form.successPopup.removeEventListener('click', window.form.onSuccessPopupClick);
+      }
+    },
+
+    onSuccessPopupClick: function () {
+      window.form.successPopup.classList.add('hidden');
+      document.removeEventListener('keydown', window.form.onSuccessEscPress);
+      window.form.successPopup.removeEventListener('click', window.form.onSuccessPopupClick);
+    },
+
+    onFormSubmit: function (evt) {
+      window.backend.save(new FormData(window.map.adForm), window.form.onReset, window.map.onError);
+      window.form.successPopup.classList.remove('hidden');
+      evt.preventDefault();
+    }
+  };
+
   var priceField = document.querySelector('#price');
-  window.roomNumberField = document.querySelector('#room_number');
-  window.capacityField = document.querySelector('#capacity');
   var titleField = document.querySelector('#title');
   var descriptionField = document.querySelector('#description');
-  window.successPopup = document.querySelector('.success');
-  window.formResetButton = document.querySelector('.ad-form__reset');
-  window.typeSelect = document.querySelector('#housing-type');
   var typeFormSelect = document.querySelector('#type');
   var roomsFormSelect = document.querySelector('#room_number');
   var guestsFormSelect = document.querySelector('#capacity');
   var timeinFormSelect = document.querySelector('#timein');
   var timeoutFormSelect = document.querySelector('#timeout');
-  window.priceSelect = document.querySelector('#housing-price');
-  window.roomsSelect = document.querySelector('#housing-rooms');
-  window.guestsSelect = document.querySelector('#housing-guests');
-  window.featuresFieldset = document.querySelector('#housing-features');
+
 
   var TypeToFilter = {
     'palace': function (ad) {
@@ -95,9 +235,11 @@
   function contains(where, what) {
     for (var i = 0; i < what.length; i++) {
       if (where.indexOf(what[i]) === -1) {
+        
         return false;
       }
     }
+    
     return true;
   }
 
@@ -106,192 +248,11 @@
     var featuresCheckedValues = [].map.call(featuresChecked, function (feature) {
       return feature.value;
     });
+    
     return contains(ad.offer.features, featuresCheckedValues);
   }
 
-  window.updatePins = function () {
-    var popup = window.tokioMap.querySelector('.popup');
-
-    if (popup) {
-      window.tokioMap.removeChild(popup);
-    }
-
-    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-
-    for (var i = 0; i < pins.length; i++) {
-      window.mapPins.removeChild(pins[i]);
-    }
-
-    var filteredData = window.ads.filter(TypeToFilter[window.typeSelect.value]).filter(PriceToFilter[window.priceSelect.value]).filter(RoomsToFilter[window.roomsSelect.value]).filter(GuestsToFilter[window.guestsSelect.value]).filter(filterFeatures);
-
-    window.insertPin(filteredData);
-  };
-
-  window.roomsGuestValidate = function () {
-    if ((window.roomNumberField.value === '1') && (window.capacityField.value !== '1')) {
-      window.capacityField.setCustomValidity('В одной комнате может поселиться только один гость.');
-    } else if ((window.roomNumberField.value === '2') && (window.capacityField.value !== '1') && (window.capacityField.value !== '2')) {
-      window.capacityField.setCustomValidity('В двух комнатах не может поселиться более 2 гостей.');
-    } else if ((window.roomNumberField.value === '3') && (window.capacityField.value !== '1') && (window.capacityField.value !== '2') && (window.capacityField.value !== '3')) {
-      window.capacityField.setCustomValidity('В трех комнатах не может поселиться более 3 гостей.');
-    } else if ((window.roomNumberField.value === '100') && (window.capacityField.value !== '0')) {
-      window.capacityField.setCustomValidity('Сто комнат предназначены не для гостей!');
-    } else {
-      window.capacityField.setCustomValidity('');
-    }
-  };
-
-  window.setMinimalPrice = function () {
-    priceField.min = TypePriceDependency[window.apartmentTypeField.value];
-    priceField.placeholder = TypePriceDependency[window.apartmentTypeField.value];
-  };
-
-  window.roomsGuestValidate();
-  window.setMinimalPrice();
-
-  window.syncTimeOut = function () {
-    window.timeInField.value = window.timeOutField.value;
-  };
-
-  window.syncTimeIn = function () {
-    window.timeOutField.value = window.timeInField.value;
-  };
-
-
-  function onSuccess() {
-    priceField.value = '';
-    priceField.placeholder = 1000;
-    titleField.value = '';
-    descriptionField.value = '';
-    typeFormSelect.value = 'flat';
-    roomsFormSelect.value = '1';
-    guestsFormSelect.value = '3';
-    timeinFormSelect.value = '12:00';
-    timeoutFormSelect.value = '12:00';
-    var ad = document.querySelector('.map__card');
-
-    if (ad) {
-      window.tokioMap.removeChild(ad);
-    }
-
-    window.pinMain.style.left = window.PIN_MAIN_X + 'px';
-    window.pinMain.style.top = window.PIN_MAIN_Y + 'px';
-    window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
-
-    for (var i = 0; i < window.formFieldsets.length; i++) {
-      window.formFieldsets[i].setAttribute('disabled', 'disabled');
-    }
-
-    for (var j = 0; j < window.formSelects.length; j++) {
-      window.formSelects[j].setAttribute('disabled', 'disabled');
-    }
-
-    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-
-    for (var k = 0; k < pins.length; k++) {
-      window.mapPins.removeChild(pins[k]);
-    }
-
-    var featuresInputs = document.querySelectorAll('.features input');
-
-    for (var l = 0; l < featuresInputs.length; l++) {
-      featuresInputs[l].checked = false;
-    }
-
-    window.tokioMap.classList.add('map--faded');
-    window.adForm.classList.add('ad-form--disabled');
-    window.successPopup.classList.remove('hidden');
-    window.isAppActivated = false;
-    window.adForm.removeEventListener('submit', window.onFormSubmit);
-    window.formResetButton.removeEventListener('click', window.onReset);
-    window.timeInField.removeEventListener('change', window.syncTimeIn);
-    window.timeOutField.removeEventListener('change', window.syncTimeOut);
-    window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
-    window.capacityField.removeEventListener('change', window.roomsGuestValidate);
-    window.roomNumberField.removeEventListener('change', window.roomsGuestValidate);
-    window.typeSelect.removeEventListener('change', window.debounce(window.updatePins));
-    window.priceSelect.removeEventListener('change', window.debounce(window.updatePins));
-    window.roomsSelect.removeEventListener('change', window.debounce(window.updatePins));
-    window.guestsSelect.removeEventListener('change', window.debounce(window.updatePins));
-    window.featuresFieldset.removeEventListener('change', window.debounce(window.updatePins));
-  }
-
-  window.onReset = function () {
-    priceField.value = '';
-    priceField.placeholder = 1000;
-    titleField.value = '';
-    descriptionField.value = '';
-    typeFormSelect.value = 'flat';
-    roomsFormSelect.value = '1';
-    guestsFormSelect.value = '3';
-    timeinFormSelect.value = '12:00';
-    timeoutFormSelect.value = '12:00';
-
-    var ad = document.querySelector('.map__card');
-
-    if (ad) {
-      window.tokioMap.removeChild(ad);
-    }
-
-    window.pinMain.style.left = window.PIN_MAIN_X + 'px';
-    window.pinMain.style.top = window.PIN_MAIN_Y + 'px';
-    window.inputAddress.setAttribute('value', (window.PIN_MAIN_X + window.PIN_MAIN_WIDTH / 2) + ', ' + (window.PIN_MAIN_Y + window.PIN_MAIN_HEIGHT - window.PIN_POINT_GAP));
-
-    for (var i = 0; i < window.formFieldsets.length; i++) {
-      window.formFieldsets[i].setAttribute('disabled', 'disabled');
-    }
-
-    for (var j = 0; j < window.formSelects.length; j++) {
-      window.formSelects[j].setAttribute('disabled', 'disabled');
-    }
-
-    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-
-    for (var k = 0; k < pins.length; k++) {
-      window.mapPins.removeChild(pins[k]);
-    }
-
-    var featuresInputs = document.querySelectorAll('.features input');
-
-    for (var l = 0; l < featuresInputs.length; l++) {
-      featuresInputs[l].checked = false;
-    }
-
-    window.tokioMap.classList.add('map--faded');
-    window.adForm.classList.add('ad-form--disabled');
-    window.isAppActivated = false;
-    window.adForm.removeEventListener('submit', window.onFormSubmit);
-    window.formResetButton.removeEventListener('click', window.onReset);
-    window.timeInField.removeEventListener('change', window.syncTimeIn);
-    window.timeOutField.removeEventListener('change', window.syncTimeOut);
-    window.apartmentTypeField.removeEventListener('change', window.setMinimalPrice);
-    window.capacityField.removeEventListener('change', window.roomsGuestValidate);
-    window.roomNumberField.removeEventListener('change', window.roomsGuestValidate);
-    window.typeSelect.removeEventListener('change', window.debounce(window.updatePins));
-    window.priceSelect.removeEventListener('change', window.debounce(window.updatePins));
-    window.roomsSelect.removeEventListener('change', window.debounce(window.updatePins));
-    window.guestsSelect.removeEventListener('change', window.debounce(window.updatePins));
-    window.featuresFieldset.removeEventListener('change', window.debounce(window.updatePins));
-  };
-
-
-  window.onSuccessEscPress = function (evt) {
-    if (evt.keyCode === window.ESC_KEYCODE) {
-      window.successPopup.classList.add('hidden');
-      document.removeEventListener('keydown', window.onSuccessEscPress);
-      window.successPopup.removeEventListener('click', window.onSuccessPopupClick);
-    }
-  };
-
-  window.onSuccessPopupClick = function () {
-    window.successPopup.classList.add('hidden');
-    document.removeEventListener('keydown', window.onSuccessEscPress);
-    window.successPopup.removeEventListener('click', window.onSuccessPopupClick);
-  };
-
-  window.onFormSubmit = function (evt) {
-    window.save(new FormData(window.adForm), onSuccess, window.onError);
-    evt.preventDefault();
-  };
+  window.form.roomsGuestValidate();
+  window.form.setMinimalPrice();
 
 })();
